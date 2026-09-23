@@ -2,8 +2,8 @@ import { eventInfo } from '../data/events'
 
 export default function About() {
   return (
-    <section id="about" className="py-28">
-      <div className="wrap grid gap-16 items-start" style={{ gridTemplateColumns: '1.1fr 0.9fr' }}>
+    <section id="about" className="py-16 md:py-28">
+      <div className="wrap grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-10 md:gap-16 items-start">
         <div className="reveal">
           <div className="sec-label">ABOUT</div>
           <p style={{ fontSize: 'clamp(20px,2.6vw,28px)', lineHeight: 1.45 }}>

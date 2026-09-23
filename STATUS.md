@@ -90,6 +90,43 @@ checkout of this branch after every round above.
   further (e.g. separate the loader from drei's other helpers) but wasn't —
   diminishing returns for a symposium microsite.
 
+## Mobile-overflow bugfix — merged directly to `main`
+
+The site was crashing/overflowing on mobile: `About.jsx` and `Lineup.jsx`
+used fixed-ratio grids (`style={{ gridTemplateColumns: '1.1fr 0.9fr' }}`,
+etc.) with no responsive fallback. Grid tracks can't shrink below their
+content's min-content width, so on narrow viewports the row was forced
+wider than the screen; combined with `overflow-x:hidden` on `body`, the
+overflowing column (main About/Lineup copy, in some cases the 3D preview
+box) got silently clipped off-screen to the right instead of wrapping —
+visually this showed up as a hard vertical cutoff partway across the
+screen with blank grid-background beyond it.
+
+Fix applied straight to `main` (small, isolated, low-risk):
+- `About.jsx`, `Lineup.jsx`: `grid-cols-1` by default, restoring the
+  original two-column ratio only at `md:`/`lg:` via Tailwind arbitrary
+  grid-template-columns classes instead of inline `style`.
+- `EventsSection.jsx`, `About.jsx`, `Lineup.jsx`: `py-16 md:py-28` (less
+  vertical padding on small screens).
+- `index.css`: added `max-width:480px` rules — tighter `.wrap` padding,
+  smaller `.card` padding, and hide `.li-tag` (event-type chip) on the
+  lineup list since there's no room for it once the tag column can't sit
+  `margin-left:auto` in a cramped row.
+
+Note for whichever session picks up next: `feat/claude-b-mobile` (and its
+parent `feat/claude-b`) independently reimplemented the meta-tag/
+deploy-config/code-splitting work that `feat/claude-a` already got merged
+into `main` via PR #5 — those two branches will conflict on `index.html`,
+`vercel.json`, `netlify.toml`, `App.jsx`, `Hero.jsx` if merged as a whole.
+This fix cherry-picked **only** the actually-new grid/CSS responsiveness
+piece out of `feat/claude-b-mobile` directly onto `main`; the branch
+itself was left untouched (still exists on `origin` for reference) rather
+than merged, to avoid re-litigating the meta/deploy duplication. Someone
+should decide whether `feat/claude-b`/`feat/claude-b-mobile` get closed
+without merging, or rebased to drop the now-redundant commits.
+
+**Verified:** `npm run build` succeeds clean on `main` after this fix.
+
 ## Suggested non-overlapping split for Session B
 
 1. **Deploy + CI** (new files only): `.github/workflows/`, plus an OG image
