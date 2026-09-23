@@ -87,6 +87,36 @@ Whoever picks a task: **add a line under here saying what you're taking**,
 so the other session doesn't duplicate it.
 
 - (Session A took: full MVP build, see above)
+- Session B took: meta/favicon tags, deploy config, bundle code-splitting
+  (items 1 and 2 above) — see below. **Not started**: accessibility pass,
+  real 3D models for event icons.
+
+## Session B — done (on `feat/claude-b`)
+
+- `feat(meta)`: OG/Twitter meta tags, theme-color, apple-touch-icon in
+  `index.html`. Note: og:image still points at `favicon.svg` as a
+  placeholder — swap for a real 1200x630 PNG when one exists, most
+  platforms won't render an SVG share preview.
+- `chore(deploy)`: `vercel.json` + `netlify.toml`, both with SPA rewrite
+  to `index.html` and long-cache immutable headers for `/assets` and
+  `/models`.
+- `perf`: split Hero's and Lineup's `<Canvas>` into their own files
+  (`HeroCanvas.jsx`, `LineupCanvas.jsx`), lazy-loaded via `React.lazy` +
+  `Suspense`. Main JS chunk: ~1.49 MB -> 344 KB; the ~966 KB three.js/GLTF
+  weight now loads in its own chunk only once those sections mount.
+  Also swapped `App.jsx`'s one-time `.reveal` query for a
+  MutationObserver-based version, since revealed elements inside the new
+  lazy chunks don't exist in the DOM on first render.
+- Verified: `npm install && npm run build` succeeds clean from this branch.
+
+### Requested but not built: Iron Man scroll-follow model
+
+Asked to add a 3D Iron Man model that tracks scroll position. Declined to
+source/build the actual Marvel character model — that's copyrighted IP,
+not something to embed even via a free glTF pulled from the web. Offered
+to build the same scroll-follow mechanic with the existing
+`public/models/robot.glb` or a new generic mech design instead; awaiting
+which direction to take before building it.
 
 ## Workflow reminder (from the humans)
 

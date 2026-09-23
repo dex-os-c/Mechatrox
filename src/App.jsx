@@ -23,17 +23,41 @@ export default function App() {
 
   useEffect(() => {
     if (!ready) return undefined
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray('.reveal').forEach((el) => {
-        gsap.set(el, { opacity: 0, y: 26 })
-        ScrollTrigger.create({
-          trigger: el,
-          start: 'top 88%',
-          onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }),
-        })
+
+    const registered = new WeakSet()
+    const registerReveal = (el) => {
+      if (registered.has(el)) return
+      registered.add(el)
+      gsap.set(el, { opacity: 0, y: 26 })
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 88%',
+        onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }),
       })
+    }
+
+    const ctx = gsap.context(() => {
+      document.querySelectorAll('.reveal').forEach(registerReveal)
     })
-    return () => ctx.revert()
+
+    // .reveal elements inside lazy-loaded chunks (e.g. HeroCanvas,
+    // LineupCanvas) don't exist yet on first pass — watch the DOM so they
+    // still get wired up once their chunk mounts.
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType !== 1) return
+          if (node.matches?.('.reveal')) registerReveal(node)
+          node.querySelectorAll?.('.reveal').forEach(registerReveal)
+        })
+      }
+    })
+    observer.observe(document.body, { childList: true, subtree: true })
+
+    return () => {
+      observer.disconnect()
+      ctx.revert()
+    }
   }, [ready])
 
   return (
