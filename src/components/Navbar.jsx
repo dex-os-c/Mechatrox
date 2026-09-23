@@ -59,12 +59,12 @@ export default function Navbar({ onOpenRegister }) {
           <a href="#" className="nav-brand flex items-center gap-2.5 relative z-10" onClick={() => setOpen(false)}>
             <span className="nav-brand-mark">
               <svg viewBox="0 0 30 30" fill="none" className="w-[18px] h-[18px] md:w-5 md:h-5 flex-shrink-0">
-                <rect x="9" y="9" width="12" height="12" stroke="#D9A441" strokeWidth="1.2" />
-                <line x1="15" y1="1" x2="15" y2="9" stroke="#C97A4A" strokeWidth="1.2" />
-                <line x1="15" y1="21" x2="15" y2="29" stroke="#C97A4A" strokeWidth="1.2" />
-                <line x1="1" y1="15" x2="9" y2="15" stroke="#C97A4A" strokeWidth="1.2" />
-                <line x1="21" y1="15" x2="29" y2="15" stroke="#C97A4A" strokeWidth="1.2" />
-                <circle cx="15" cy="15" r="2.4" fill="#D9A441" />
+                <rect x="9" y="9" width="12" height="12" stroke="#FF1E1E" strokeWidth="1.2" />
+                <line x1="15" y1="1" x2="15" y2="9" stroke="#C81E1E" strokeWidth="1.2" />
+                <line x1="15" y1="21" x2="15" y2="29" stroke="#C81E1E" strokeWidth="1.2" />
+                <line x1="1" y1="15" x2="9" y2="15" stroke="#C81E1E" strokeWidth="1.2" />
+                <line x1="21" y1="15" x2="29" y2="15" stroke="#C81E1E" strokeWidth="1.2" />
+                <circle cx="15" cy="15" r="2.4" fill="#FF1E1E" />
               </svg>
             </span>
             <span className="leading-tight">
