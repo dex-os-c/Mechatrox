@@ -6,11 +6,12 @@ import * as THREE from 'three'
 const COPPER = '#C97A4A'
 const GOLD = '#D9A441'
 
-export function RobotModel() {
+export function RobotModel({ onReady, introProgress }) {
   const group = useRef()
   const { scene, animations } = useGLTF('/models/robot.glb')
   const { actions, names } = useAnimations(animations, group)
   const { pointer } = useThree()
+  const notified = useRef(false)
 
   const prepared = useMemo(() => {
     const box = new THREE.Box3().setFromObject(scene)
@@ -29,15 +30,27 @@ export function RobotModel() {
     }
   }, [actions, names])
 
+  // Notify the parent (outside the Canvas) once the actual THREE.Group exists, so it can
+  // attach a real GSAP/ScrollTrigger timeline directly to group.position/rotation/scale.
+  // This only fires after the GLTF has resolved through Suspense, so there's no race.
+  useEffect(() => {
+    if (group.current && !notified.current) {
+      notified.current = true
+      onReady?.(group.current)
+    }
+  }, [onReady])
+
+  // Idle mouse-parallax only takes over once the scroll entrance has fully played —
+  // otherwise it would fight the scrubbed GSAP timeline for control of rotation.y.
   useFrame(() => {
-    if (group.current) {
+    if (group.current && (!introProgress || introProgress.current >= 0.999)) {
       group.current.rotation.y = -0.5 + pointer.x * 0.3
     }
   })
 
   return (
-    <group ref={group} position={[1.15, -0.9, 0]} scale={prepared} rotation={[0, -0.5, 0]}>
-      <primitive object={scene} />
+    <group ref={group}>
+      <primitive object={scene} scale={prepared} />
     </group>
   )
 }

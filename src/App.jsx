@@ -1,17 +1,21 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import gsap from 'gsap'
 import Preloader from './components/Preloader'
 import Cursor from './components/Cursor'
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
 import Marquee from './components/Marquee'
-import Lineup from './components/Lineup'
 import About from './components/About'
 import EventsSection from './components/EventsSection'
 import Footer from './components/Footer'
 import { technicalEvents, nonTechnicalEvents } from './data/events'
 import { useLenis } from './hooks/useLenis'
+
+// Hero and Lineup are the only two consumers of three.js / @react-three/fiber / drei.
+// Splitting them into their own chunk keeps the main bundle well under the 500kB warning
+// instead of shipping the whole 3D stack in the initial payload.
+const Hero = lazy(() => import('./components/Hero'))
+const Lineup = lazy(() => import('./components/Lineup'))
 
 export default function App() {
   const [ready, setReady] = useState(false)
@@ -21,19 +25,32 @@ export default function App() {
     document.body.classList.toggle('locked', !ready)
   }, [ready])
 
+  // Reveal setup uses a MutationObserver rather than a one-time DOM query, because
+  // Hero/Lineup mount asynchronously (lazy chunks) and their .reveal elements may not
+  // exist yet at the instant `ready` flips true.
   useEffect(() => {
     if (!ready) return undefined
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray('.reveal').forEach((el) => {
-        gsap.set(el, { opacity: 0, y: 26 })
-        ScrollTrigger.create({
-          trigger: el,
-          start: 'top 88%',
-          onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }),
-        })
+    const seen = new WeakSet()
+
+    const wire = (el) => {
+      if (seen.has(el)) return
+      seen.add(el)
+      gsap.set(el, { opacity: 0, y: 26 })
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 88%',
+        onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }),
       })
+    }
+
+    document.querySelectorAll('.reveal').forEach(wire)
+
+    const observer = new MutationObserver(() => {
+      document.querySelectorAll('.reveal').forEach(wire)
     })
-    return () => ctx.revert()
+    observer.observe(document.body, { childList: true, subtree: true })
+
+    return () => observer.disconnect()
   }, [ready])
 
   return (
@@ -41,9 +58,13 @@ export default function App() {
       <Preloader onDone={() => setReady(true)} />
       <Cursor />
       <Navbar />
-      <Hero ready={ready} />
+      <Suspense fallback={<div style={{ minHeight: '100dvh' }} />}>
+        <Hero ready={ready} />
+      </Suspense>
       <Marquee />
-      <Lineup />
+      <Suspense fallback={<div style={{ minHeight: '520px' }} />}>
+        <Lineup />
+      </Suspense>
       <About />
       <EventsSection
         id="events-technical"
