@@ -6,18 +6,11 @@ import * as THREE from 'three'
 const COPPER = '#C97A4A'
 const GOLD = '#D9A441'
 
-// Pose the scroll-driven intro animates FROM (tiny, spun away, off to the side) and TO
-// (the model's resting position/rotation). Kept in one place so Hero.jsx's GSAP timeline
-// and this component's default JSX pose can't drift out of sync with each other.
-export const INTRO_START = { position: [4.6, -3.2, -2.4], rotation: [0, -3.4, 0.4], scale: 0.12 }
-export const REST_POSE = { position: [1.15, -0.9, 0], rotation: [0, -0.5, 0], scale: 1 }
-
-export function RobotModel({ onReady, introProgress }) {
+export function RobotModel() {
   const group = useRef()
   const { scene, animations } = useGLTF('/models/robot.glb')
   const { actions, names } = useAnimations(animations, group)
   const { pointer } = useThree()
-  const notified = useRef(false)
 
   const prepared = useMemo(() => {
     const box = new THREE.Box3().setFromObject(scene)
@@ -36,28 +29,15 @@ export function RobotModel({ onReady, introProgress }) {
     }
   }, [actions, names])
 
-  // Notify the parent (outside the Canvas) once the actual THREE.Group exists, so it can
-  // attach a real GSAP/ScrollTrigger timeline directly to group.position/rotation/scale.
-  // This only fires after the GLTF has resolved through Suspense, so there's no race.
-  useEffect(() => {
-    if (group.current && !notified.current) {
-      notified.current = true
-      onReady?.(group.current)
-    }
-  }, [onReady])
-
-  // Idle mouse-parallax only takes over once the scroll entrance has fully played (or if
-  // there's no scroll-driven intro at all, e.g. reduced-motion) — otherwise it would fight
-  // the scrubbed GSAP timeline for control of rotation.y.
   useFrame(() => {
-    if (group.current && (!introProgress || introProgress.current >= 0.999)) {
-      group.current.rotation.y = REST_POSE.rotation[1] + pointer.x * 0.3
+    if (group.current) {
+      group.current.rotation.y = -0.5 + pointer.x * 0.3
     }
   })
 
   return (
-    <group ref={group} position={INTRO_START.position} rotation={INTRO_START.rotation} scale={INTRO_START.scale}>
-      <primitive object={scene} scale={prepared} />
+    <group ref={group} position={[1.15, -0.9, 0]} scale={prepared} rotation={[0, -0.5, 0]}>
+      <primitive object={scene} />
     </group>
   )
 }

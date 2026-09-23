@@ -147,42 +147,7 @@ responsive mode) before merging — a `230vh` scrub-driven timeline is
 exactly the kind of thing that behaves very differently once mobile
 browser chrome (address bar show/hide) starts changing `100dvh` mid-scroll.
 
-## Scroll-mech entrance — re-added, hardened for mobile
-
-Re-added the scroll-driven robot entrance (shrinks/flies in as you scroll
-down the hero runway, reverses smoothly if you scroll back up — inherent
-to a GSAP scrub timeline, since it ties animation progress directly to
-scroll position rather than playing once) after the earlier revert. Two
-changes from the version that was reverted:
-
-- `useLenis.js` now calls `ScrollTrigger.config({ ignoreMobileResize:
-  true })` right after registering the plugin. This is the likely actual
-  cause of the "looks broken on mobile" report: by default ScrollTrigger
-  recalculates all start/end positions whenever the viewport height
-  changes, and on mobile the browser chrome (address bar) showing/hiding
-  on scroll constantly changes `100dvh` — so the scrub's start/end points
-  were shifting mid-scroll. This flag tells it to ignore that specific
-  cause of resize.
-- `Hero3D.jsx` now exports `INTRO_START`/`REST_POSE` constants, and
-  `RobotModel`'s default JSX pose *is* `INTRO_START` (previously it
-  defaulted to identity transform, so there was a one-frame flash of a
-  full-size robot at the origin before the GSAP `gsap.set` calls ran).
-  `Hero.jsx` reads both constants instead of hardcoding the same numbers
-  twice, so the two can't drift out of sync.
-- `prefers-reduced-motion` still skips straight to `REST_POSE` with no
-  scroll-tied animation at all.
-
-**Verified:** `npm run build` succeeds clean. **Not verified:** actual
-on-device mobile scroll feel (only checked in a build/desktop-devtools
-sense) — if it still looks off on a real phone, the `ignoreMobileResize`
-fix may not be sufficient on its own, and the next step would be to
-test with `ScrollTrigger.refresh()` calls on `visualViewport.resize` /
-orientation change, or to shorten/simplify the animation specifically
-under a mobile `matchMedia` breakpoint via `gsap.matchMedia()`.
-
 ## Suggested non-overlapping split for Session B
-
-
 
 1. **Deploy + CI** (new files only): `.github/workflows/`, plus an OG image
    + `<meta property="og:image">` in `index.html`.
