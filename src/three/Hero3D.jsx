@@ -6,11 +6,14 @@ import * as THREE from 'three'
 const COPPER = '#C97A4A'
 const GOLD = '#D9A441'
 
+const FUN_CLIPS = ['Wave', 'ThumbsUp', 'Yes', 'Dance', 'Jump']
+
 export function RobotModel() {
   const group = useRef()
   const { scene, animations } = useGLTF('/models/robot.glb')
   const { actions, names } = useAnimations(animations, group)
   const { pointer } = useThree()
+  const currentRef = useRef(null)
 
   const prepared = useMemo(() => {
     const box = new THREE.Box3().setFromObject(scene)
@@ -19,14 +22,20 @@ export function RobotModel() {
     return scale
   }, [scene])
 
-  useEffect(() => {
+  const playIdle = () => {
     const idle = names.find((n) => /idle/i.test(n)) || names[0]
     if (idle && actions[idle]) {
       actions[idle].reset().fadeIn(0.4).play()
+      currentRef.current = idle
     }
+  }
+
+  useEffect(() => {
+    playIdle()
     return () => {
-      if (idle && actions[idle]) actions[idle].fadeOut(0.3)
+      if (currentRef.current && actions[currentRef.current]) actions[currentRef.current].fadeOut(0.3)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actions, names])
 
   useFrame(() => {
@@ -35,8 +44,39 @@ export function RobotModel() {
     }
   })
 
+  const playFun = () => {
+    const available = FUN_CLIPS.filter((c) => names.includes(c))
+    if (!available.length) return
+    const pick = available[Math.floor(Math.random() * available.length)]
+    const prev = currentRef.current
+    const next = actions[pick]
+    if (!next || pick === prev) return
+
+    if (prev && actions[prev]) actions[prev].fadeOut(0.25)
+    next.reset().setLoop(THREE.LoopOnce, 1).fadeIn(0.25).play()
+    next.clampWhenFinished = true
+    currentRef.current = pick
+
+    const mixer = next.getMixer()
+    const onFinished = (e) => {
+      if (e.action !== next) return
+      mixer.removeEventListener('finished', onFinished)
+      next.fadeOut(0.3)
+      playIdle()
+    }
+    mixer.addEventListener('finished', onFinished)
+  }
+
   return (
-    <group ref={group} position={[1.15, -0.9, 0]} scale={prepared} rotation={[0, -0.5, 0]}>
+    <group
+      ref={group}
+      position={[1.15, -0.9, 0]}
+      scale={prepared}
+      rotation={[0, -0.5, 0]}
+      onClick={(e) => { e.stopPropagation(); playFun() }}
+      onPointerOver={() => { document.body.style.cursor = 'pointer' }}
+      onPointerOut={() => { document.body.style.cursor = 'auto' }}
+    >
       <primitive object={scene} />
     </group>
   )

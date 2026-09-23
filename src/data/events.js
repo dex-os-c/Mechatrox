@@ -65,13 +65,6 @@ export const nonTechnicalEvents = [
     tag: 'Pitch',
     desc: 'Sell something absurd. Teams get a prop and ninety seconds to convince a skeptical room to buy it.',
   },
-  {
-    code: 'NT.05',
-    key: 'mystery',
-    title: 'Mystery Box',
-    tag: 'Surprise',
-    desc: "A challenge nobody sees coming until it's already started. Bring a team that can improvise.",
-  },
 ]
 
 export const eventInfo = {
@@ -79,7 +72,7 @@ export const eventInfo = {
   tagline: 'CONNECT · COMPETE · CREATE',
   department: 'Department of Mechatronics Engineering',
   college: 'Er. Perumal Manimekalai College of Engineering',
-  collegeShort: 'PMC Tech (Autonomous)',
+  collegeShort: 'PMC Tech',
   address: 'NH-44, Bengaluru - Chennai Highway, Koneripalli, Hosur - 635 117',
   website: 'www.pmctech.org',
   date: '29.10.2026',

@@ -15,8 +15,6 @@
 html, body, #root{ height:100%; }
 body{
   margin:0; background:var(--pcb-0); color:var(--ink); font-family:var(--font-sans);
-  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size:64px 64px; background-position:center top;
   overflow-x:hidden;
 }
 body.locked{ overflow:hidden; height:100vh; }

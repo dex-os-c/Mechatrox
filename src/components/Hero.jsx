@@ -16,6 +16,7 @@ export default function Hero({ ready }) {
       .to('.hero-sub', { opacity: 1, y: 0, duration: 0.6 }, '-=0.3')
       .to('.hero-cta', { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
       .to('.hero-scroll', { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+      .to('.hero-tap-hint', { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
   }, [ready])
 
   return (
@@ -74,6 +75,13 @@ export default function Hero({ ready }) {
           </span>
           SCROLL
         </div>
+      </div>
+
+      <div
+        className="hero-tap-hint absolute right-6 md:right-10 z-[2] font-mono text-[10px] tracking-[0.1em] hidden sm:block"
+        style={{ bottom: '28px', color: 'var(--ink-faint)', opacity: 0, transform: 'translateY(16px)' }}
+      >
+        TAP THE BOT ↝
       </div>
 
       <style>{`
