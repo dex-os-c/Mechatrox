@@ -2,16 +2,16 @@ import { eventInfo, technicalEvents, nonTechnicalEvents } from '../data/events'
 
 export default function Footer() {
   return (
-    <footer id="contact" className="pt-24" style={{ borderTop: '1px solid var(--line)' }}>
+    <footer id="contact" className="pt-16 md:pt-24" style={{ borderTop: '1px solid var(--line)' }}>
       <div className="wrap">
-        <div className="flex justify-between items-end gap-6 flex-wrap pb-16" style={{ borderBottom: '1px solid var(--line)' }}>
+        <div className="flex justify-between items-end gap-6 flex-wrap pb-10 md:pb-16" style={{ borderBottom: '1px solid var(--line)' }}>
           <h2 className="max-w-2xl leading-tight" style={{ fontSize: 'clamp(30px,5vw,56px)' }}>
             Got a team? Bring them to {eventInfo.festName}.
           </h2>
           <a href="#" className="btn filled">Register your team</a>
         </div>
 
-        <div className="grid gap-10 py-14" style={{ gridTemplateColumns: '1.4fr 1fr 1fr 1fr' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] gap-10 py-10 md:py-14">
           <div>
             <h4 className="font-mono text-[11px] tracking-[0.1em] mb-4" style={{ color: 'var(--ink-faint)' }}>DEPARTMENT</h4>
             <p className="max-w-[280px] text-sm leading-relaxed" style={{ color: 'var(--ink)' }}>
