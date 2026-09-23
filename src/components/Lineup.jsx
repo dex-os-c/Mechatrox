@@ -1,16 +1,7 @@
-import { Suspense, useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Suspense, lazy, useState } from 'react'
 import { technicalEvents, nonTechnicalEvents } from '../data/events'
-import { ICONS } from '../three/EventIcons'
 
-function RotatingGroup({ children }) {
-  const ref = useRef()
-  const reduceMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  useFrame((state, delta) => {
-    if (ref.current) ref.current.rotation.y += (reduceMotion ? 0.06 : 0.28) * delta
-  })
-  return <group ref={ref}>{children}</group>
-}
+const LineupCanvas = lazy(() => import('./LineupCanvas'))
 
 const ALL = [
   ...technicalEvents.map((e) => ({ ...e, track: 'Technical' })),
@@ -19,7 +10,6 @@ const ALL = [
 
 export default function Lineup() {
   const [active, setActive] = useState(ALL[0])
-  const ActiveIcon = ICONS[active.key]
 
   return (
     <section id="lineup" className="py-28">
@@ -44,15 +34,9 @@ export default function Lineup() {
         </div>
 
         <div className="relative reveal" style={{ aspectRatio: '1/1', border: '1px solid var(--line-bright)', background: 'var(--pcb-1)' }}>
-          <Canvas camera={{ position: [1.7, 1.3, 2.6], fov: 40 }} dpr={[1, 1.6]}>
-            <ambientLight intensity={0.6} />
-            <directionalLight position={[2, 3, 2]} intensity={0.9} />
-            <Suspense fallback={null}>
-              <RotatingGroup>
-                <ActiveIcon />
-              </RotatingGroup>
-            </Suspense>
-          </Canvas>
+          <Suspense fallback={null}>
+            <LineupCanvas activeKey={active.key} />
+          </Suspense>
           <div
             className="absolute left-0 right-0 bottom-0 px-5 py-4 font-mono text-xs"
             style={{ color: 'var(--ink-dim)', borderTop: '1px solid var(--line)', background: 'rgba(4,16,13,0.65)' }}
