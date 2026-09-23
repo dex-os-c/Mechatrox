@@ -127,6 +127,26 @@ without merging, or rebased to drop the now-redundant commits.
 
 **Verified:** `npm run build` succeeds clean on `main` after this fix.
 
+## Revert: scroll-driven mech entrance — reported broken on mobile
+
+The `feat(hero)` scroll-mech entrance (robot spawns tiny/off-screen and
+flies into place over a 230vh scroll runway) looked broken in practice —
+reported as spawning in the wrong spot and looking janky, especially on
+mobile. Reverted `src/components/Hero.jsx` and `src/three/Hero3D.jsx`
+straight back to their pre-`c16b74d` state: robot renders at its resting
+pose (`position [1.15,-0.9,0]`, `rotation [0,-0.5,0]`) immediately on
+load, standard `min-h-[100dvh]` hero section (no sticky runway), idle
+mouse-parallax active from the start, no ScrollTrigger. `onReady`/
+`introProgress` plumbing removed since nothing outside the Canvas needs to
+drive the group anymore.
+
+**Verified:** `npm run build` succeeds clean on `main` after this revert.
+If a scroll-linked animation is wanted again later, it needs to actually
+be tested on a real mobile viewport (not just desktop with devtools
+responsive mode) before merging — a `230vh` scrub-driven timeline is
+exactly the kind of thing that behaves very differently once mobile
+browser chrome (address bar show/hide) starts changing `100dvh` mid-scroll.
+
 ## Suggested non-overlapping split for Session B
 
 1. **Deploy + CI** (new files only): `.github/workflows/`, plus an OG image
