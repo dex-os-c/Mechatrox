@@ -74,8 +74,8 @@ export default function Navbar() {
       </header>
 
       <div
-        className="fixed inset-0 z-45 flex flex-col justify-center px-10 gap-7 transition-transform duration-400 md:hidden"
-        style={{ background: 'var(--pcb-0)', transform: open ? 'translateY(0)' : 'translateY(-100%)', zIndex: 45 }}
+        className="fixed inset-0 z-[60] flex flex-col justify-center px-10 gap-7 transition-transform duration-400 md:hidden"
+        style={{ background: 'var(--pcb-0)', transform: open ? 'translateY(0)' : 'translateY(-100%)' }}
       >
         {LINKS.map((l) => (
           <a key={l.href} href={l.href} className="text-4xl font-semibold" style={{ color: 'var(--ink)' }} onClick={() => setOpen(false)}>
