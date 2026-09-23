@@ -12,8 +12,8 @@ export default function Lineup() {
   const [active, setActive] = useState(ALL[0])
 
   return (
-    <section id="lineup" className="py-28">
-      <div className="wrap grid gap-16 items-center" style={{ gridTemplateColumns: '1.1fr 1fr' }}>
+    <section id="lineup" className="py-16 md:py-28">
+      <div className="wrap grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-16 items-center">
         <div className="reveal">
           <div className="sec-label">THE LINEUP</div>
           <h2 style={{ fontSize: 'clamp(32px,4.4vw,52px)' }}>Ten events. Two tracks.</h2>
