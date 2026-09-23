@@ -43,7 +43,7 @@ export default function Hero({ ready }) {
           {eventInfo.department.toUpperCase()} · {eventInfo.collegeShort.toUpperCase()}
         </div>
 
-        <h1 className="font-bold leading-[0.94] max-w-3xl" style={{ fontSize: 'clamp(44px, 9vw, 108px)' }}>
+        <h1 className="font-bold leading-[0.9] max-w-4xl" style={{ fontSize: 'clamp(56px, 12vw, 148px)', letterSpacing: '-0.015em' }}>
           <div className="overflow-hidden hero-line">
             <span className="reveal-span" style={{ transform: 'translateY(110%)' }}>BUILD IT.</span>
           </div>
@@ -59,8 +59,8 @@ export default function Hero({ ready }) {
         </h1>
 
         <p className="hero-sub max-w-xl mt-6 text-base leading-relaxed" style={{ color: 'var(--ink-dim)', opacity: 0, transform: 'translateY(16px)' }}>
-          {eventInfo.festName} is the {eventInfo.department}'s annual symposium at {eventInfo.college} — five technical
-          events for people who'd rather solder, model, and debug than sit through another lecture, and five
+          {eventInfo.festName} is the {eventInfo.department}'s annual symposium at {eventInfo.college} — four technical
+          events for people who'd rather solder, model, and debug than sit through another lecture, and four
           non-technical ones for everyone else in the room.
         </p>
 
