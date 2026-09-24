@@ -232,3 +232,30 @@ Owner-requested changes, six items, done as separate commits (see
 - Commit often with clear messages — **and push right after committing**,
   don't batch (see the warning at the top of this file for why).
 - Keep this file updated before you run low on context.
+
+## Hero robot: persistent page-wide layer, not a side companion (current)
+
+The small separate "scroll companion" bot (its own scaled-down robot in a
+right-hand lane, own WebGL context) has been **removed** —
+`ScrollCompanion.jsx` and `three/CompanionRobot.jsx` are deleted. Owner
+feedback: wrong design (wanted the actual Hero robot, not a mini
+lookalike) and it wasn't reliably showing up on real devices anyway.
+
+In its place: Hero's own robot Canvas (`PersistentRobot`, defined at the
+top of `Hero.jsx`) is now `position: fixed`, page-level, instead of
+scoped to Hero's own box — same camera/scale, so it doesn't disappear
+when Hero scrolls out of view, it just stays on screen.
+
+**If you touch layout CSS, read this first:** `PersistentRobot` is left
+at `z-index: auto` on purpose. Marquee, Lineup, About, EventsSection (x2),
+and Footer all got `relative z-10` added *specifically* so their content
+paints over the robot instead of it bleeding through — per the CSS
+stacking spec, non-explicit z-index content paints below anything with
+an explicit z-index regardless of DOM order. Removing `z-10` from any of
+those sections, or giving the robot an explicit z-index of its own,
+will make the robot render on top of that section's text again.
+
+Net WebGL contexts: back down to 2 (Hero + Lineup), one fewer than with
+the companion.
+
+**Verified:** `npm install && npm run build` succeeds clean.
