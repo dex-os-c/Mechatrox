@@ -6,33 +6,49 @@ import * as THREE from 'three'
 const COPPER = '#C97A4A'
 const GOLD = '#D9A441'
 
-const FUN_CLIPS = ['Wave', 'ThumbsUp', 'Yes', 'Dance', 'Jump']
+// Cycle order for the idle loop — TPose is deliberately excluded, it's a rig
+// reference pose, not something you'd want playing on a live hero section.
+const CYCLE_CLIPS = ['Idle', 'Walk', 'Run']
+const CYCLE_MS = 5000
 
 export function RobotModel() {
   const group = useRef()
-  const { scene, animations } = useGLTF('/models/robot.glb')
+  const { scene, animations } = useGLTF('/models/Soldier.glb')
   const { actions, names } = useAnimations(animations, group)
   const { pointer } = useThree()
   const currentRef = useRef(null)
+  const cycleIndexRef = useRef(0)
 
   const prepared = useMemo(() => {
     const box = new THREE.Box3().setFromObject(scene)
     const size = box.getSize(new THREE.Vector3())
-    const scale = 2.6 / Math.max(size.x, size.y, size.z)
+    const scale = 2.7 / Math.max(size.x, size.y, size.z)
     return scale
   }, [scene])
 
-  const playIdle = () => {
-    const idle = names.find((n) => /idle/i.test(n)) || names[0]
-    if (idle && actions[idle]) {
-      actions[idle].reset().fadeIn(0.4).play()
-      currentRef.current = idle
-    }
+  const play = (clipName) => {
+    const clip = names.includes(clipName) ? clipName : names[0]
+    const next = actions[clip]
+    if (!next || clip === currentRef.current) return
+    const prev = currentRef.current
+    if (prev && actions[prev]) actions[prev].fadeOut(0.5)
+    next.reset().fadeIn(0.5).play()
+    currentRef.current = clip
   }
 
   useEffect(() => {
-    playIdle()
+    if (!names.length) return undefined
+    cycleIndexRef.current = 0
+    play(CYCLE_CLIPS[0])
+
+    // Auto-cycle through the animation set every 5s — no click needed.
+    const interval = window.setInterval(() => {
+      cycleIndexRef.current = (cycleIndexRef.current + 1) % CYCLE_CLIPS.length
+      play(CYCLE_CLIPS[cycleIndexRef.current])
+    }, CYCLE_MS)
+
     return () => {
+      window.clearInterval(interval)
       if (currentRef.current && actions[currentRef.current]) actions[currentRef.current].fadeOut(0.3)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -44,44 +60,13 @@ export function RobotModel() {
     }
   })
 
-  const playFun = () => {
-    const available = FUN_CLIPS.filter((c) => names.includes(c))
-    if (!available.length) return
-    const pick = available[Math.floor(Math.random() * available.length)]
-    const prev = currentRef.current
-    const next = actions[pick]
-    if (!next || pick === prev) return
-
-    if (prev && actions[prev]) actions[prev].fadeOut(0.25)
-    next.reset().setLoop(THREE.LoopOnce, 1).fadeIn(0.25).play()
-    next.clampWhenFinished = true
-    currentRef.current = pick
-
-    const mixer = next.getMixer()
-    const onFinished = (e) => {
-      if (e.action !== next) return
-      mixer.removeEventListener('finished', onFinished)
-      next.fadeOut(0.3)
-      playIdle()
-    }
-    mixer.addEventListener('finished', onFinished)
-  }
-
   return (
-    <group
-      ref={group}
-      position={[1.15, -0.9, 0]}
-      scale={prepared}
-      rotation={[0, -0.5, 0]}
-      onClick={(e) => { e.stopPropagation(); playFun() }}
-      onPointerOver={() => { document.body.style.cursor = 'pointer' }}
-      onPointerOut={() => { document.body.style.cursor = 'auto' }}
-    >
+    <group ref={group} position={[1.15, -1.15, 0]} scale={prepared} rotation={[0, -0.5, 0]}>
       <primitive object={scene} />
     </group>
   )
 }
-useGLTF.preload('/models/robot.glb')
+useGLTF.preload('/models/Soldier.glb')
 
 export function NetworkField() {
   const group = useRef()
