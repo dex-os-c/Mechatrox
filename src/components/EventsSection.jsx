@@ -1,4 +1,4 @@
-export default function EventsSection({ id, trackLabel, title, sub, events }) {
+export default function EventsSection({ id, trackLabel, title, sub, events, onSelect }) {
   return (
     <section id={id} className="py-16 md:py-28">
       <div className="wrap">
@@ -11,14 +11,23 @@ export default function EventsSection({ id, trackLabel, title, sub, events }) {
         </div>
         <div className="grid-events">
           {events.map((ev) => (
-            <div key={ev.code} className="card reveal">
+            <button
+              key={ev.code}
+              type="button"
+              className="card reveal text-left w-full"
+              onClick={() => onSelect?.(ev)}
+              aria-haspopup="dialog"
+            >
               <div className="flex justify-between items-start mb-3.5">
                 <span className="card-code">{ev.code}</span>
                 <span className="card-tag">{ev.tag}</span>
               </div>
               <h3 className="text-[22px] mb-2.5">{ev.title}</h3>
               <p className="text-[14.5px] leading-relaxed max-w-[420px]" style={{ color: 'var(--ink-dim)' }}>{ev.desc}</p>
-            </div>
+              <span className="card-more font-mono text-[11px] tracking-[0.08em] mt-4 inline-flex items-center gap-1.5" style={{ color: 'var(--gold)' }}>
+                VIEW DETAILS <span aria-hidden="true">→</span>
+              </span>
+            </button>
           ))}
         </div>
       </div>

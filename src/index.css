@@ -48,11 +48,17 @@ p{ margin:0; }
 
 .grid-events{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line-bright); border:1px solid var(--line-bright); }
 @media (max-width:760px){ .grid-events{ grid-template-columns:1fr; } }
-.card{ background:var(--pcb-0); padding:34px; transition:background .3s ease; }
+.card{ background:var(--pcb-0); padding:34px; transition:background .3s ease; font:inherit; color:inherit; border:none; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 @media (max-width:480px){ .card{ padding:24px; } }
-.card:hover{ background:var(--pcb-1); }
+.card:hover, .card:focus-visible{ background:var(--pcb-1); }
 .card-code{ font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); letter-spacing:0.1em; }
 .card-tag{ font-family:var(--font-mono); font-size:10.5px; color:var(--copper-bright); border:1px solid var(--copper); padding:3px 9px; letter-spacing:0.08em; }
+.card-more{ opacity:0; transform:translateX(-4px); transition:opacity .25s ease, transform .25s ease; }
+.card:hover .card-more, .card:focus-visible .card-more{ opacity:1; transform:translateX(0); }
+
+.event-modal{ animation:modal-in .25s ease-out; }
+@keyframes modal-in{ from{ opacity:0; transform:translateY(18px); } to{ opacity:1; transform:translateY(0); } }
+@media (prefers-reduced-motion: reduce){ .event-modal{ animation:none; } }
 
 .lineup-item{ display:flex; align-items:baseline; gap:18px; padding:17px 4px; border-bottom:1px solid var(--line); cursor:pointer; opacity:.55; transition:opacity .3s ease, transform .3s ease; }
 .lineup-item:hover, .lineup-item.active{ opacity:1; transform:translateX(6px); }
