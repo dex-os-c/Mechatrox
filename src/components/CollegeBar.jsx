@@ -5,13 +5,13 @@ export default function CollegeBar() {
   const [logoOk, setLogoOk] = useState(true)
 
   return (
-    <div className="wrap flex items-center justify-between gap-x-6 gap-y-1 py-3 flex-wrap" style={{ background: 'var(--pcb-1)', borderBottom: '1px solid var(--line-bright)' }}>
+    <div className="wrap flex items-center justify-between gap-x-6 gap-y-1 py-4 flex-wrap" style={{ background: 'var(--pcb-1)', borderBottom: '1px solid var(--line-bright)' }}>
       <div className="flex items-center gap-3 min-w-0">
         {logoOk ? (
           <img
             src="/pmc-crest.png"
             alt="PMC Tech crest"
-            className="h-12 md:h-16 w-auto object-contain flex-shrink-0"
+            className="h-[72px] md:h-24 w-auto object-contain flex-shrink-0"
             style={{ filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.5))' }}
             onError={() => setLogoOk(false)}
           />
@@ -25,10 +25,10 @@ export default function CollegeBar() {
         )}
         <span className="hidden sm:block w-px self-stretch flex-shrink-0" style={{ background: 'var(--line-bright)' }} />
         <div className="leading-tight min-w-0">
-          <span className="font-mono text-[10px] md:text-[11px] font-bold tracking-[0.14em] block" style={{ color: 'var(--gold)' }}>
+          <span className="font-mono text-[12px] md:text-[14px] font-bold tracking-[0.14em] block" style={{ color: 'var(--gold)' }}>
             {eventInfo.collegeShort.toUpperCase()} <span className="font-normal" style={{ color: 'var(--ink-faint)' }}>· {eventInfo.collegeTagline}</span>
           </span>
-          <span className="block text-[11px] md:text-[12px] leading-snug" style={{ color: 'var(--ink-dim)' }}>
+          <span className="block text-[13px] md:text-[15px] leading-snug" style={{ color: 'var(--ink-dim)' }}>
             {eventInfo.college}{eventInfo.autonomous ? ' (Autonomous)' : ''}
           </span>
         </div>

@@ -54,7 +54,7 @@ export default function Hero({ ready, onOpenRegister }) {
     <>
       <PersistentRobot />
 
-      <section className="relative min-h-[100dvh] flex flex-col justify-end pt-[122px]">
+      <section className="relative min-h-[100dvh] flex flex-col justify-end pt-[172px] md:pt-[210px]">
         <div
           className="absolute inset-0 z-[1] pointer-events-none"
           style={{ background: 'linear-gradient(180deg, rgba(4,16,13,0.1) 0%, rgba(4,16,13,0.5) 55%, var(--pcb-0) 100%)' }}
