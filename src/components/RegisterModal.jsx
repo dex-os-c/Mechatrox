@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { technicalEvents, nonTechnicalEvents, eventInfo } from '../data/events'
-
-// Set this to your registration API's URL once it's deployed (e.g. the
-// Flask/SQLite backend's endpoint). Left blank, the form validates and
-// shows an honest "not connected yet" notice instead of faking success.
-const REGISTER_ENDPOINT = ''
+import { supabase } from '../lib/supabaseClient'
 
 const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year']
 
@@ -86,25 +82,26 @@ export default function RegisterModal({ open, onClose }) {
     setErrors(errs)
     if (errs.length) return
 
-    const payload = {
-      timestamp: new Date().toISOString(),
-      team_name: teamName, college, department, year,
-      members, events: [techEvent, nontechEvent],
-    }
+    const filledMembers = MEMBER_SLOTS
+      .map(({ key, label }) => ({ role: label, ...members[key] }))
+      .filter((m) => m.name.trim())
 
-    if (!REGISTER_ENDPOINT) {
-      setErrors(['This form isn\u2019t connected to a backend yet \u2014 set REGISTER_ENDPOINT in RegisterModal.jsx.'])
+    if (!supabase) {
+      setErrors(['Registration isn\u2019t connected to a database yet \u2014 set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY in your .env file.'])
       return
     }
 
     setSubmitting(true)
     try {
-      await fetch(REGISTER_ENDPOINT, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+      const { error } = await supabase.from('registrations').insert({
+        team_name: teamName,
+        college,
+        department,
+        year,
+        members: filledMembers,
+        events: [techEvent, nontechEvent],
       })
+      if (error) throw error
       setSubmitted(true)
     } catch {
       setErrors(['Something went wrong sending your registration. Please check your connection and try again.'])
