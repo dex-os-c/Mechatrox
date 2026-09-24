@@ -104,9 +104,11 @@ export default function ScrollCompanion() {
           transition: opacity .3s ease;
           will-change: transform;
         }
-        @media (max-width: 640px){ .scroll-companion{ display: none; } }
 
         .scroll-companion-stage{ width: 92px; height: 118px; }
+        @media (max-width: 480px){
+          .scroll-companion-stage{ width: 66px; height: 86px; }
+        }
 
         .scroll-companion.is-pre-entrance .scroll-companion-stage{
           transform: translate(16px, -44px) scale(0.35);
