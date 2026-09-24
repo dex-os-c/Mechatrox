@@ -15,16 +15,30 @@ export function RobotModel() {
   const group = useRef()
   const { scene, animations } = useGLTF('/models/Soldier.glb')
   const { actions, names } = useAnimations(animations, group)
-  const { pointer } = useThree()
+  const { pointer, viewport } = useThree()
   const currentRef = useRef(null)
   const cycleIndexRef = useRef(0)
 
-  const prepared = useMemo(() => {
+  // Height-based, not max(x,y,z) — this model's bind pose has a slung rifle
+  // that reaches wider than the body is tall, so using the widest axis
+  // under-scales the actual on-screen character. Height is the one
+  // dimension that's stable across the whole animation set.
+  const modelHeight = useMemo(() => {
     const box = new THREE.Box3().setFromObject(scene)
-    const size = box.getSize(new THREE.Vector3())
-    const scale = 2.7 / Math.max(size.x, size.y, size.z)
-    return scale
+    return box.getSize(new THREE.Vector3()).y || 1
   }, [scene])
+
+  // Positioned relative to the camera's actual visible frustum (viewport,
+  // in three.js world units) instead of fixed coordinates. A fixed
+  // position={[1.15, ...]} was tuned for a wide desktop frustum; on a
+  // narrow portrait phone the same camera's horizontal FOV covers a much
+  // smaller slice of world space, so that fixed x sat right at — or past —
+  // the edge, showing only a cropped, close-up sliver of the model.
+  const targetHeight = viewport.height * (viewport.width < 3.4 ? 0.6 : 0.82)
+  const scale = targetHeight / modelHeight
+  const halfBodyWidth = 0.45 * scale // rough shoulder-to-shoulder half-width at this scale
+  const x = Math.min(viewport.width * 0.28, viewport.width / 2 - halfBodyWidth - 0.1)
+  const y = -viewport.height / 2 + 0.1
 
   const play = (clipName) => {
     const clip = names.includes(clipName) ? clipName : names[0]
@@ -61,7 +75,7 @@ export function RobotModel() {
   })
 
   return (
-    <group ref={group} position={[1.15, -1.15, 0]} scale={prepared} rotation={[0, -0.5, 0]}>
+    <group ref={group} position={[x, y, 0]} scale={scale} rotation={[0, -0.5, 0]}>
       <primitive object={scene} />
     </group>
   )
