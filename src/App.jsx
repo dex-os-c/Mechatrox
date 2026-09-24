@@ -8,6 +8,8 @@ import Marquee from './components/Marquee'
 import About from './components/About'
 import EventsSection from './components/EventsSection'
 import Footer from './components/Footer'
+import ScrollCompanion from './components/ScrollCompanion'
+import EventDetailModal from './components/EventDetailModal'
 import { technicalEvents, nonTechnicalEvents } from './data/events'
 import { useLenis } from './hooks/useLenis'
 
@@ -19,6 +21,7 @@ const Lineup = lazy(() => import('./components/Lineup'))
 
 export default function App() {
   const [ready, setReady] = useState(false)
+  const [selectedEvent, setSelectedEvent] = useState(null)
   useLenis()
 
   useEffect(() => {
@@ -57,13 +60,14 @@ export default function App() {
     <>
       <Preloader onDone={() => setReady(true)} />
       <Cursor />
+      <ScrollCompanion />
       <Navbar />
       <Suspense fallback={<div style={{ minHeight: '100dvh' }} />}>
         <Hero ready={ready} />
       </Suspense>
       <Marquee />
       <Suspense fallback={<div style={{ minHeight: '520px' }} />}>
-        <Lineup />
+        <Lineup onSelect={setSelectedEvent} />
       </Suspense>
       <About />
       <EventsSection
@@ -72,6 +76,7 @@ export default function App() {
         title="Technical Events"
         sub="Hardware, design, and the kind of pressure that only comes from a demo that has to actually run."
         events={technicalEvents}
+        onSelect={setSelectedEvent}
       />
       <EventsSection
         id="events-nontechnical"
@@ -79,8 +84,10 @@ export default function App() {
         title="Non-Technical Events"
         sub="No soldering iron required. Bring a team, an opinion, or both."
         events={nonTechnicalEvents}
+        onSelect={setSelectedEvent}
       />
       <Footer />
+      <EventDetailModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />
     </>
   )
 }

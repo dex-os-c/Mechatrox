@@ -1,7 +1,6 @@
-import { useMemo, useRef } from 'react'
+import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { useGLTF, Text, Edges } from '@react-three/drei'
-import * as THREE from 'three'
+import { Edges } from '@react-three/drei'
 
 const COPPER = '#C97A4A'
 const GOLD = '#D9A441'
@@ -9,9 +8,15 @@ const DARK = '#0F281F'
 const DEEP = '#081A15'
 const DANGER = '#E2543A'
 
-/** TE.01 — PPT: stacked, offset presentation slides */
+/** TE.01 — Theorix: stacked, offset presentation slides that riffle gently */
 export function PptIcon() {
   const group = useRef()
+  useFrame((state) => {
+    if (group.current) {
+      group.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.9) * 0.05
+      group.current.position.y = Math.sin(state.clock.elapsedTime * 1.4) * 0.04
+    }
+  })
   return (
     <group ref={group} rotation={[-0.3, 0, 0]}>
       {[0, 1, 2].map((i) => (
@@ -80,40 +85,7 @@ export function ExpoIcon() {
   )
 }
 
-/** TE.04 — Circuit Debugging: the real rubber duck (rubber-duck debugging) on a PCB plate */
-export function DebugIcon() {
-  const { scene } = useGLTF('/models/duck.glb')
-  const group = useRef()
-
-  const { scale, offsetY } = useMemo(() => {
-    const box = new THREE.Box3().setFromObject(scene)
-    const size = box.getSize(new THREE.Vector3())
-    const center = box.getCenter(new THREE.Vector3())
-    const s = 1.3 / Math.max(size.x, size.y, size.z)
-    return { scale: s, offsetY: -center.y * s + (size.y * s) / 2 - 0.35 }
-  }, [scene])
-
-  useFrame((state) => {
-    if (group.current) group.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.04
-  })
-
-  return (
-    <group ref={group} rotation={[-0.15, 0, 0]}>
-      <primitive object={scene} scale={scale} position={[0, offsetY, 0]} />
-      <mesh position={[0, -0.72, 0]}>
-        <cylinderGeometry args={[0.9, 0.9, 0.04, 32]} />
-        <meshStandardMaterial color={DEEP} metalness={0.4} roughness={0.6} />
-      </mesh>
-      <mesh position={[0, -0.7, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[0.9, 0.006, 4, 48]} />
-        <meshBasicMaterial color={GOLD} />
-      </mesh>
-    </group>
-  )
-}
-useGLTF.preload('/models/duck.glb')
-
-/** TE.05 — Design Mirror: a shape and its mirrored twin either side of a symmetry line */
+/** TE.04 — Mirror Verse: a shape and its mirrored twin either side of a symmetry line */
 export function MirrorIcon() {
   const group = useRef()
   useFrame((state) => {
@@ -246,38 +218,13 @@ export function AdIcon() {
   )
 }
 
-/** NT.05 — Mystery Box: a crate with a floating question mark */
-export function MysteryIcon() {
-  const mark = useRef()
-  useFrame((state) => {
-    if (mark.current) {
-      mark.current.position.y = 0.55 + Math.sin(state.clock.elapsedTime * 2) * 0.06
-      mark.current.rotation.y = state.clock.elapsedTime * 0.5
-    }
-  })
-  return (
-    <group rotation={[-0.2, 0.3, 0]}>
-      <mesh>
-        <boxGeometry args={[0.9, 0.9, 0.9]} />
-        <meshStandardMaterial color={DEEP} roughness={0.6} />
-        <Edges color={GOLD} />
-      </mesh>
-      <Text ref={mark} fontSize={0.5} color={GOLD} anchorX="center" anchorY="middle">
-        ?
-      </Text>
-    </group>
-  )
-}
-
 export const ICONS = {
   ppt: PptIcon,
   quiz: QuizIcon,
   expo: ExpoIcon,
-  debug: DebugIcon,
   mirror: MirrorIcon,
   ipl: AuctionIcon,
   esports: EsportsIcon,
   meme: MemeIcon,
   ad: AdIcon,
-  mystery: MysteryIcon,
 }

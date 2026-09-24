@@ -17,7 +17,7 @@ const ALL = [
   ...nonTechnicalEvents.map((e) => ({ ...e, track: 'Non-Technical' })),
 ]
 
-export default function Lineup() {
+export default function Lineup({ onSelect }) {
   const [active, setActive] = useState(ALL[0])
   const ActiveIcon = ICONS[active.key]
 
@@ -26,14 +26,15 @@ export default function Lineup() {
       <div className="wrap grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-16 items-center">
         <div className="reveal">
           <div className="sec-label">THE LINEUP</div>
-          <h2 style={{ fontSize: 'clamp(32px,4.4vw,52px)' }}>Nine events. Two tracks.</h2>
+          <h2 style={{ fontSize: 'clamp(32px,4.4vw,52px)' }}>Eight events. Two tracks.</h2>
           <ul className="list-none mt-6 p-0">
             {ALL.map((ev, i) => (
               <li
                 key={ev.code}
                 className={`lineup-item ${active.key === ev.key ? 'active' : ''}`}
                 onMouseEnter={() => setActive(ev)}
-                onClick={() => setActive(ev)}
+                onFocus={() => setActive(ev)}
+                onClick={() => { setActive(ev); onSelect?.(ev) }}
               >
                 <span className="li-num">{String(i + 1).padStart(2, '0')}</span>
                 <span className="li-title">{ev.title}</span>
@@ -53,12 +54,15 @@ export default function Lineup() {
               </RotatingGroup>
             </Suspense>
           </Canvas>
-          <div
-            className="absolute left-0 right-0 bottom-0 px-5 py-4 font-mono text-xs"
-            style={{ color: 'var(--ink-dim)', borderTop: '1px solid var(--line)', background: 'rgba(4,16,13,0.65)' }}
+          <button
+            type="button"
+            className="absolute left-0 right-0 bottom-0 px-5 py-4 font-mono text-xs text-left w-full"
+            style={{ color: 'var(--ink-dim)', borderTop: '1px solid var(--line)', background: 'rgba(4,16,13,0.65)', cursor: 'pointer' }}
+            onClick={() => onSelect?.(active)}
           >
             {active.desc}
-          </div>
+            <span className="block mt-2" style={{ color: 'var(--gold)' }}>VIEW FULL DETAILS →</span>
+          </button>
         </div>
       </div>
     </section>

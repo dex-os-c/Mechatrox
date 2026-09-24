@@ -18,6 +18,10 @@ turns; it had to be redone). Committing isn't the safety net — pushing is.
 - `feat/claude-a` — this session.
 - `feat/claude-b` — reserved for the second session. Not created yet as of
   this writing.
+- `feat/site-updates` — owner-requested redesign round (hero type size,
+  event rename + click-to-expand modal, hero robot swap + auto-animation,
+  drop Circuit Debugging, scroll companion, navbar redesign). See section
+  below. Not yet merged to `main`.
 
 ## Session A — done
 
@@ -165,6 +169,60 @@ Whoever picks a task: **add a line here saying what you're taking**, so the
 other session doesn't duplicate it.
 
 - (Session A took: full MVP build + scroll-mech follow-up, see above)
+
+## Session on `feat/site-updates` — owner's redesign pass, done
+
+Owner-requested changes, six items, done as separate commits (see
+`git log feat/site-updates`):
+
+1. **Bigger hero type**: `Hero.jsx` — `clamp(56px,12vw,148px)` (was
+   `clamp(44px,9vw,108px)`), tighter letter-spacing, `max-w-4xl`.
+2. **Event lineup renamed to match new poster, click-to-expand added**:
+   `events.js` fully renamed (Theorix, Quiztronix, Innoverse, Mirror Verse /
+   The Auction War, E-Warzone, Meme Mania, Ad Mad Show), each event now
+   carries a `details[]` array. New `EventDetailModal.jsx` opens on click
+   from both the `EventsSection` grid cards (now real `<button>`s) and the
+   `Lineup` list/preview panel.
+3. **Hero robot swapped + auto-animating**: `/models/robot.glb`
+   (RobotExpressive) replaced with `/models/Soldier.glb`
+   (Idle/Walk/Run/TPose clips, pulled from the three.js example repo, same
+   license class as the asset it replaced). Animation now auto-cycles
+   Idle → Walk → Run every 5s via `setInterval`, no longer click-triggered —
+   the "TAP THE BOT" hint and its click handler were removed accordingly.
+4. **Circuit Debugging removed, 9 → 8 events**: dropped from `events.js`,
+   `DebugIcon`/`duck.glb` removed from `EventIcons.jsx`/`public/models/`
+   (also removed the unused `MysteryIcon`/`mystery` key — it was never
+   wired to a real 10th event). All "nine events"/"5+5" copy across
+   `Hero.jsx`, `About.jsx`, `Lineup.jsx` updated to eight/4+4.
+5. **Scroll companion**: new `ScrollCompanion.jsx` — small fixed SVG bot on
+   the right edge that lerps its vertical position to scroll progress,
+   fades in after ~60px of scroll, hidden under 640px width and respects
+   `prefers-reduced-motion`. Only touches `App.jsx` via one added import +
+   one added `<ScrollCompanion />` line.
+6. **Navbar redesign**: desktop links now sit in a bordered pill group with
+   hover/active backgrounds; added scrollspy (`IntersectionObserver`) so
+   the current section highlights in both desktop and mobile nav; header
+   gets a drop shadow once scrolled; mobile menu got a faint PCB-grid
+   backdrop.
+
+**Not done / explicitly scoped out of this round:**
+- Items 2/3 asked for the *other* procedural icons (quiz/expo/mirror/ipl/
+  esports/meme/ad) to become "real models" too — left as improved
+  procedural geometry, not swapped for `.glb` files. Reason: no reliable
+  source of free, thematically-correct rigged models (gavel, controller,
+  megaphone, etc.) was available within this session's network access
+  (GitHub raw content only). If the owner has specific `.glb` files, drop
+  them in `public/models/` and wire them into `EventIcons.jsx`'s `ICONS`
+  map — straightforward swap.
+- `duck.glb`/`robot.glb` deleted from `public/models/`; `Soldier.glb`
+  added (~2.1 MB, vs. robot.glb's ~450 KB — noticeably heavier hero chunk,
+  not yet re-measured against the ~124 KB gzip first-paint figure from the
+  earlier perf pass; the model itself is lazy-loaded with everything else
+  in the Hero chunk, so first paint is unaffected, but the async 3D chunk
+  is now bigger).
+
+**Verified:** `npm install && npm run build` succeeds clean on
+`feat/site-updates` after every commit above.
 
 ## Workflow reminder (from the humans)
 
