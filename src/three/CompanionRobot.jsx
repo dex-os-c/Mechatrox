@@ -11,9 +11,10 @@ import * as THREE from 'three'
 // bounding, reaching motion) stands in for a "climb" going back up since
 // there's no literal climb clip in this asset.
 const MODE_CLIPS = { down: 'Jump', up: 'WalkJump', idle: 'Idle' }
+const POKE_CLIPS = ['Wave', 'ThumbsUp', 'Dance', 'Yes']
 const DESIRED_HEIGHT = 1.55
 
-export default function CompanionRobot({ mode }) {
+export default function CompanionRobot({ mode, poke }) {
   const group = useRef()
   const { scene, animations } = useGLTF('/models/robot.glb')
   // Hero.jsx uses the raw `scene` from the same cached GLTF with its own
@@ -22,6 +23,8 @@ export default function CompanionRobot({ mode }) {
   const clonedScene = useMemo(() => cloneSkeleton(scene), [scene])
   const { actions, names } = useAnimations(animations, group)
   const currentRef = useRef(null)
+  const pokedRef = useRef(false)
+  const lastPokeRef = useRef(0)
 
   const scale = useMemo(() => {
     const box = new THREE.Box3().setFromObject(clonedScene)
@@ -29,16 +32,46 @@ export default function CompanionRobot({ mode }) {
     return DESIRED_HEIGHT / height
   }, [clonedScene])
 
-  useEffect(() => {
-    if (!names.length) return
-    const wanted = MODE_CLIPS[mode] || 'Idle'
-    const clip = names.includes(wanted) ? wanted : names[0]
+  const playClip = (clip, { once = false } = {}) => {
     const next = actions[clip]
     if (!next || clip === currentRef.current) return
     const prev = currentRef.current
     if (prev && actions[prev]) actions[prev].fadeOut(0.3)
-    next.reset().fadeIn(0.3).play()
+    next.reset()
+    if (once) next.setLoop(THREE.LoopOnce, 1).clampWhenFinished = true
+    next.fadeIn(0.3).play()
     currentRef.current = clip
+  }
+
+  // Tapping the bot plays a one-off fun clip, then falls back to whatever
+  // the current scroll mode wants once it finishes — a tap mid-scroll
+  // doesn't get stuck stranded on a pose.
+  useEffect(() => {
+    if (!poke || poke === lastPokeRef.current || !names.length) return
+    lastPokeRef.current = poke
+    const available = POKE_CLIPS.filter((c) => names.includes(c))
+    if (!available.length) return
+    const pick = available[Math.floor(Math.random() * available.length)]
+    pokedRef.current = true
+    playClip(pick, { once: true })
+    const next = actions[pick]
+    const mixer = next?.getMixer()
+    const onFinished = (e) => {
+      if (e.action !== next) return
+      mixer.removeEventListener('finished', onFinished)
+      pokedRef.current = false
+      playClip(MODE_CLIPS[mode] || 'Idle')
+    }
+    mixer?.addEventListener('finished', onFinished)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [poke])
+
+  useEffect(() => {
+    if (!names.length || pokedRef.current) return
+    const wanted = MODE_CLIPS[mode] || 'Idle'
+    const clip = names.includes(wanted) ? wanted : names[0]
+    playClip(clip)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, actions, names])
 
   useFrame((state) => {

@@ -17,6 +17,7 @@ export default function ScrollCompanion() {
   const [visible, setVisible] = useState(false)
   const [entered, setEntered] = useState(false)
   const [mode, setMode] = useState('idle') // 'down' | 'up' | 'idle'
+  const [poke, setPoke] = useState(0)
 
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -74,10 +75,17 @@ export default function ScrollCompanion() {
     <div
       ref={trackRef}
       className={`scroll-companion ${entered ? 'is-entered' : 'is-pre-entrance'}`}
-      aria-hidden="true"
       style={{ opacity: visible ? 1 : 0 }}
     >
-      <div className="scroll-companion-stage">
+      <div
+        className="scroll-companion-stage"
+        style={{ pointerEvents: 'auto', cursor: 'pointer' }}
+        role="button"
+        tabIndex={0}
+        aria-label="Poke the mascot"
+        onClick={() => setPoke((p) => p + 1)}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setPoke((p) => p + 1) } }}
+      >
         <Canvas
           camera={{ position: [0, 0.15, 3.15], fov: 28 }}
           dpr={[1, 1.5]}
@@ -88,7 +96,7 @@ export default function ScrollCompanion() {
           <directionalLight position={[2, 3, 2]} intensity={1.1} />
           <pointLight position={[-1.5, 1, 1.5]} color="#D9A441" intensity={1.2} />
           <Suspense fallback={null}>
-            <CompanionRobot mode={mode} />
+            <CompanionRobot mode={mode} poke={poke} />
           </Suspense>
         </Canvas>
       </div>
