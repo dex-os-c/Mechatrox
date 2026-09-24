@@ -8,14 +8,34 @@ const LINKS = [
   { href: '#contact', label: 'Contact' },
 ]
 
+const SECTION_IDS = ['lineup', 'events-technical', 'events-nontechnical', 'contact']
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const [activeHref, setActiveHref] = useState('')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Lightweight scrollspy so the current section is visibly highlighted
+  // rather than the nav just sitting there as a static list of links.
+  useEffect(() => {
+    const sections = SECTION_IDS.map((id) => document.getElementById(id)).filter(Boolean)
+    if (!sections.length) return undefined
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveHref(`#${entry.target.id}`)
+        })
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+    )
+    sections.forEach((s) => observer.observe(s))
+    return () => observer.disconnect()
   }, [])
 
   useEffect(() => {
@@ -26,44 +46,55 @@ export default function Navbar() {
   return (
     <>
       <header
-        className="fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
         style={{
-          background: scrolled || open ? 'rgba(4,16,13,0.9)' : 'transparent',
-          backdropFilter: scrolled || open ? 'blur(10px)' : 'none',
-          borderBottom: `1px solid ${scrolled || open ? 'var(--line)' : 'transparent'}`,
+          background: scrolled || open ? 'rgba(4,16,13,0.88)' : 'transparent',
+          backdropFilter: scrolled || open ? 'blur(14px)' : 'none',
+          borderBottom: `1px solid ${scrolled || open ? 'var(--line-bright)' : 'transparent'}`,
+          boxShadow: scrolled ? '0 10px 30px -18px rgba(0,0,0,0.6)' : 'none',
           paddingTop: 'env(safe-area-inset-top, 0px)',
         }}
       >
-        <nav className="wrap flex items-center justify-between h-[62px] md:h-[78px]">
-          <a href="#" className="flex items-center gap-2.5 relative z-10" onClick={() => setOpen(false)}>
-            <svg viewBox="0 0 30 30" fill="none" className="w-6 h-6 md:w-7 md:h-7 flex-shrink-0">
-              <rect x="9" y="9" width="12" height="12" stroke="#D9A441" strokeWidth="1.2" />
-              <line x1="15" y1="1" x2="15" y2="9" stroke="#C97A4A" strokeWidth="1.2" />
-              <line x1="15" y1="21" x2="15" y2="29" stroke="#C97A4A" strokeWidth="1.2" />
-              <line x1="1" y1="15" x2="9" y2="15" stroke="#C97A4A" strokeWidth="1.2" />
-              <line x1="21" y1="15" x2="29" y2="15" stroke="#C97A4A" strokeWidth="1.2" />
-              <circle cx="15" cy="15" r="2.4" fill="#D9A441" />
-            </svg>
+        <nav className="wrap flex items-center justify-between h-[60px] md:h-[74px]">
+          <a href="#" className="nav-brand flex items-center gap-2.5 relative z-10" onClick={() => setOpen(false)}>
+            <span className="nav-brand-mark">
+              <svg viewBox="0 0 30 30" fill="none" className="w-[18px] h-[18px] md:w-5 md:h-5 flex-shrink-0">
+                <rect x="9" y="9" width="12" height="12" stroke="#D9A441" strokeWidth="1.2" />
+                <line x1="15" y1="1" x2="15" y2="9" stroke="#C97A4A" strokeWidth="1.2" />
+                <line x1="15" y1="21" x2="15" y2="29" stroke="#C97A4A" strokeWidth="1.2" />
+                <line x1="1" y1="15" x2="9" y2="15" stroke="#C97A4A" strokeWidth="1.2" />
+                <line x1="21" y1="15" x2="29" y2="15" stroke="#C97A4A" strokeWidth="1.2" />
+                <circle cx="15" cy="15" r="2.4" fill="#D9A441" />
+              </svg>
+            </span>
             <span className="leading-tight">
-              <span className="font-mono text-[13px] md:text-[15px] font-bold tracking-[0.08em] block" style={{ color: 'var(--ink)' }}>
+              <span className="font-mono text-[12.5px] md:text-[14.5px] font-bold tracking-[0.08em] block" style={{ color: 'var(--ink)' }}>
                 {eventInfo.festName}
               </span>
-              <span className="hidden md:block font-mono text-[9px] tracking-[0.1em]" style={{ color: 'var(--ink-faint)' }}>
+              <span className="hidden md:block font-mono text-[8.5px] tracking-[0.14em]" style={{ color: 'var(--ink-faint)' }}>
                 {eventInfo.department.toUpperCase()}
               </span>
             </span>
           </a>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="nav-pill hidden md:flex items-center gap-1">
             {LINKS.map((l) => (
-              <a key={l.href} href={l.href} className="text-sm relative group" style={{ color: 'var(--ink-dim)' }}>
+              <a
+                key={l.href}
+                href={l.href}
+                className={`nav-link ${activeHref === l.href ? 'active' : ''}`}
+              >
                 {l.label}
-                <span className="absolute left-0 -bottom-0.5 w-0 h-px group-hover:w-full transition-all duration-300" style={{ background: 'var(--gold)' }} />
               </a>
             ))}
           </div>
 
-          <a href="#contact" className="btn filled hidden md:inline-flex">Register your team</a>
+          <div className="hidden md:flex items-center gap-4">
+            <span className="font-mono text-[10.5px] tracking-[0.1em]" style={{ color: 'var(--ink-faint)' }}>
+              {eventInfo.date}
+            </span>
+            <a href="#contact" className="btn filled">Register your team</a>
+          </div>
 
           <button
             className="md:hidden w-9 h-9 relative z-10 flex-shrink-0"
@@ -88,7 +119,8 @@ export default function Navbar() {
           pointerEvents: open ? 'auto' : 'none',
         }}
       >
-        <div className="flex flex-col">
+        <div className="mobile-menu-grid" aria-hidden="true" />
+        <div className="flex flex-col relative z-10">
           {LINKS.map((l, i) => (
             <a
               key={l.href}
@@ -102,14 +134,14 @@ export default function Navbar() {
               }}
               onClick={() => setOpen(false)}
             >
-              <span className="font-mono text-xs" style={{ color: 'var(--ink-faint)' }}>{String(i + 1).padStart(2, '0')}</span>
-              <span className="text-3xl font-semibold group-active:opacity-60" style={{ color: 'var(--ink)' }}>{l.label}</span>
+              <span className="font-mono text-xs" style={{ color: activeHref === l.href ? 'var(--gold)' : 'var(--ink-faint)' }}>{String(i + 1).padStart(2, '0')}</span>
+              <span className="text-3xl font-semibold group-active:opacity-60" style={{ color: activeHref === l.href ? 'var(--gold)' : 'var(--ink)' }}>{l.label}</span>
             </a>
           ))}
         </div>
         <a
           href="#contact"
-          className="btn filled self-start mt-8"
+          className="btn filled self-start mt-8 relative z-10"
           style={{
             transition: `opacity .35s ease ${open ? LINKS.length * 0.06 + 0.14 : 0}s, transform .35s ease ${open ? LINKS.length * 0.06 + 0.14 : 0}s`,
             opacity: open ? 1 : 0,

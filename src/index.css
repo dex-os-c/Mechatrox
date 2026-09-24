@@ -68,6 +68,16 @@ p{ margin:0; }
 .li-tag{ margin-left:auto; font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.08em; color:var(--ink-faint); border:1px solid var(--line-bright); padding:3px 8px; white-space:nowrap; }
 @media (max-width:480px){ .li-tag{ display:none; } .lineup-item{ gap:12px; } }
 
+.nav-brand-mark{ display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border:1px solid var(--line-bright); background:var(--pcb-1); transition:border-color .25s ease; }
+.nav-brand:hover .nav-brand-mark{ border-color:var(--gold); }
+
+.nav-pill{ padding:4px; border:1px solid var(--line); background:rgba(15,40,31,0.4); }
+.nav-link{ position:relative; font-size:13px; padding:8px 15px; color:var(--ink-dim); transition:color .25s ease, background .25s ease; }
+.nav-link:hover{ color:var(--ink); background:rgba(217,164,65,0.06); }
+.nav-link.active{ color:var(--gold); background:rgba(217,164,65,0.1); }
+
+.mobile-menu-grid{ position:absolute; inset:0; pointer-events:none; opacity:.5; background-image:linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size:34px 34px; -webkit-mask-image:linear-gradient(180deg, transparent, black 30%, black 70%, transparent); mask-image:linear-gradient(180deg, transparent, black 30%, black 70%, transparent); }
+
 .marquee-mask{ position:relative; border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--pcb-1); overflow:hidden; padding:16px 0; }
 .marquee-track{ display:flex; width:max-content; animation: marquee 32s linear infinite; }
 .marquee-track span{ font-family:var(--font-mono); font-size:13px; letter-spacing:0.1em; color:var(--ink-faint); padding:0 22px; white-space:nowrap; }
