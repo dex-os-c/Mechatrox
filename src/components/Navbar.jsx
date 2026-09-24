@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { eventInfo } from '../data/events'
+import CollegeBar from './CollegeBar'
 
 const LINKS = [
   { href: '#lineup', label: 'Lineup' },
@@ -55,6 +56,7 @@ export default function Navbar({ onOpenRegister }) {
           paddingTop: 'env(safe-area-inset-top, 0px)',
         }}
       >
+        <CollegeBar />
         <nav className="wrap flex items-center justify-between h-[60px] md:h-[74px]">
           <a href="#" className="nav-brand flex items-center gap-2.5 relative z-10" onClick={() => setOpen(false)}>
             <span className="nav-brand-mark">
