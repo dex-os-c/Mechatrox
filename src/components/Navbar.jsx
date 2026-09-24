@@ -60,13 +60,13 @@ export default function Navbar() {
         <CollegeBar />
         <nav className="wrap flex items-center justify-between h-[60px] md:h-[74px]">
           <a href="#" className="nav-brand flex items-center gap-3 relative z-10" onClick={() => setOpen(false)}>
-            <span className="nav-brand-mark flex-shrink-0 relative flex items-center justify-center" style={{ width: 44, height: 44 }}>
+            <span className="nav-brand-mark flex-shrink-0 relative flex items-center justify-center" style={{ width: 38, height: 38 }}>
               <span className="absolute inset-0 rounded-full" style={{ background: 'radial-gradient(circle, rgba(217,164,65,0.28) 0%, transparent 70%)' }} />
               {brandLogoOk ? (
                 <img
                   src="/mechatrox-emblem.png"
                   alt="MECHATROX 2K26"
-                  className="relative h-9 md:h-11 w-auto object-contain"
+                  className="relative h-8 md:h-9 w-auto object-contain"
                   style={{ filter: 'drop-shadow(0 0 8px rgba(217,164,65,0.35))' }}
                   onError={() => setBrandLogoOk(false)}
                 />

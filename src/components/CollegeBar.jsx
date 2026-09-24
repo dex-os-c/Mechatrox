@@ -5,13 +5,13 @@ export default function CollegeBar() {
   const [logoOk, setLogoOk] = useState(true)
 
   return (
-    <div className="wrap flex items-center justify-between gap-x-6 gap-y-1 py-2 flex-wrap" style={{ background: 'var(--pcb-1)', borderBottom: '1px solid var(--line-bright)' }}>
+    <div className="wrap flex items-center justify-between gap-x-6 gap-y-1 py-3 flex-wrap" style={{ background: 'var(--pcb-1)', borderBottom: '1px solid var(--line-bright)' }}>
       <div className="flex items-center gap-3 min-w-0">
         {logoOk ? (
           <img
             src="/pmc-crest.png"
             alt="PMC Tech crest"
-            className="h-9 md:h-11 w-auto object-contain flex-shrink-0"
+            className="h-12 md:h-16 w-auto object-contain flex-shrink-0"
             style={{ filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.5))' }}
             onError={() => setLogoOk(false)}
           />
