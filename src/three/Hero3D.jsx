@@ -11,6 +11,12 @@ const GOLD = '#D9A441'
 const CYCLE_CLIPS = ['Idle', 'Walk', 'Run']
 const CYCLE_MS = 5000
 
+// Soldier.glb's rest pose faces the opposite way round from the old
+// RobotExpressive model, so the same small -0.5 yaw that used to read as a
+// pleasant 3/4 turn toward camera instead showed its back. Base yaw here is
+// flipped 180° from that, then nudged the same -0.5 for the same 3/4 angle.
+const BASE_YAW = Math.PI - 0.5
+
 export function RobotModel() {
   const group = useRef()
   const { scene, animations } = useGLTF('/models/Soldier.glb')
@@ -38,7 +44,10 @@ export function RobotModel() {
   const scale = targetHeight / modelHeight
   const halfBodyWidth = 0.45 * scale // rough shoulder-to-shoulder half-width at this scale
   const x = Math.min(viewport.width * 0.28, viewport.width / 2 - halfBodyWidth - 0.1)
-  const y = -viewport.height / 2 + 0.1
+  // Anchored a bit further up from the very bottom of the frustum than a
+  // pure feet-at-the-floor placement — reads as "standing in frame" rather
+  // than "sinking below the fold" behind the hero copy/CTAs.
+  const y = -viewport.height / 2 + (viewport.width < 3.4 ? 0.75 : 0.4)
 
   const play = (clipName) => {
     const clip = names.includes(clipName) ? clipName : names[0]
@@ -46,6 +55,9 @@ export function RobotModel() {
     if (!next || clip === currentRef.current) return
     const prev = currentRef.current
     if (prev && actions[prev]) actions[prev].fadeOut(0.5)
+    // Run gets a touch of extra playback speed — at the clip's native rate
+    // it reads as barely different from Walk from a static hero camera.
+    next.timeScale = clip === 'Run' ? 1.2 : 1
     next.reset().fadeIn(0.5).play()
     currentRef.current = clip
   }
@@ -68,14 +80,19 @@ export function RobotModel() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actions, names])
 
-  useFrame(() => {
+  useFrame((state) => {
     if (group.current) {
-      group.current.rotation.y = -0.5 + pointer.x * 0.3
+      group.current.rotation.y = BASE_YAW + pointer.x * 0.3
+      // A skeletal Walk/Run clip on a character that never actually
+      // translates forward reads as subtle/static from a distance — this
+      // layers a small breathing-style bob on top of whatever clip is
+      // playing so the hero figure never looks frozen between poses.
+      group.current.position.y = y + Math.sin(state.clock.elapsedTime * 1.6) * 0.035
     }
   })
 
   return (
-    <group ref={group} position={[x, y, 0]} scale={scale} rotation={[0, -0.5, 0]}>
+    <group ref={group} position={[x, y, 0]} scale={scale} rotation={[0, BASE_YAW, 0]}>
       <primitive object={scene} />
     </group>
   )
