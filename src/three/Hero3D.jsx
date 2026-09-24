@@ -3,8 +3,8 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import * as THREE from 'three'
 
-const COPPER = '#C97A4A'
-const GOLD = '#D9A441'
+const COPPER = '#C81E1E'
+const GOLD = '#FF1E1E'
 
 // Idle plays by default; these are the "fun" poses cycled through on a
 // timer instead of waiting for a click.

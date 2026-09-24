@@ -39,7 +39,7 @@ export default function Cursor() {
       if (!ringRef.current) return
       ringRef.current.style.width = '26px'
       ringRef.current.style.height = '26px'
-      ringRef.current.style.borderColor = '#D9A441'
+      ringRef.current.style.borderColor = '#FF1E1E'
     }
     const targets = document.querySelectorAll('a, button, .card, .lineup-item')
     targets.forEach((el) => {

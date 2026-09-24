@@ -2,11 +2,11 @@ import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Edges } from '@react-three/drei'
 
-const COPPER = '#C97A4A'
-const GOLD = '#D9A441'
+const COPPER = '#C81E1E'
+const GOLD = '#FF1E1E'
 const DARK = '#0F281F'
 const DEEP = '#081A15'
-const DANGER = '#E2543A'
+const DANGER = '#FF2A2A'
 
 /** TE.01 — Theorix: stacked, offset presentation slides that riffle gently */
 export function PptIcon() {
