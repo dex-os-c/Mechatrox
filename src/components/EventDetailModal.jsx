@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-export default function EventDetailModal({ event, onClose }) {
+export default function EventDetailModal({ event, onClose, onOpenRegister }) {
   const panelRef = useRef(null)
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export default function EventDetailModal({ event, onClose }) {
         </div>
 
         <div className="px-7 md:px-10 pb-9">
-          <a href="#contact" className="btn filled" onClick={onClose}>Register for this event</a>
+          <button type="button" className="btn filled" onClick={() => { onClose(); onOpenRegister() }}>Register for this event</button>
         </div>
       </div>
     </div>

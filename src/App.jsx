@@ -9,6 +9,7 @@ import About from './components/About'
 import EventsSection from './components/EventsSection'
 import Footer from './components/Footer'
 import EventDetailModal from './components/EventDetailModal'
+import RegisterModal from './components/RegisterModal'
 import { technicalEvents, nonTechnicalEvents } from './data/events'
 import { useLenis } from './hooks/useLenis'
 
@@ -22,6 +23,8 @@ const Lineup = lazy(() => import('./components/Lineup'))
 export default function App() {
   const [ready, setReady] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState(null)
+  const [registerOpen, setRegisterOpen] = useState(false)
+  const openRegister = () => setRegisterOpen(true)
   useLenis()
 
   useEffect(() => {
@@ -60,9 +63,9 @@ export default function App() {
     <>
       <Preloader onDone={() => setReady(true)} />
       <Cursor />
-      <Navbar />
+      <Navbar onOpenRegister={openRegister} />
       <Suspense fallback={<div style={{ minHeight: '100dvh' }} />}>
-        <Hero ready={ready} />
+        <Hero ready={ready} onOpenRegister={openRegister} />
       </Suspense>
       <Marquee />
       <Suspense fallback={<div style={{ minHeight: '520px' }} />}>
@@ -85,8 +88,9 @@ export default function App() {
         events={nonTechnicalEvents}
         onSelect={setSelectedEvent}
       />
-      <Footer />
-      <EventDetailModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />
+      <Footer onOpenRegister={openRegister} />
+      <EventDetailModal event={selectedEvent} onClose={() => setSelectedEvent(null)} onOpenRegister={openRegister} />
+      <RegisterModal open={registerOpen} onClose={() => setRegisterOpen(false)} />
     </>
   )
 }

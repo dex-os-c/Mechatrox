@@ -36,7 +36,7 @@ function PersistentRobot() {
   )
 }
 
-export default function Hero({ ready }) {
+export default function Hero({ ready, onOpenRegister }) {
   const lineRefs = useRef([])
 
   useEffect(() => {
@@ -88,7 +88,7 @@ export default function Hero({ ready }) {
 
           <div className="hero-cta flex gap-4 flex-wrap mt-9" style={{ opacity: 0, transform: 'translateY(16px)' }}>
             <a href="#lineup" className="btn filled">See the events</a>
-            <a href="#contact" className="btn">Register your team</a>
+            <button type="button" className="btn" onClick={onOpenRegister}>Register your team</button>
           </div>
 
           <div className="hero-scroll flex items-center gap-2.5 my-11 font-mono text-[11px] tracking-[0.12em]" style={{ color: 'var(--ink-faint)', opacity: 0, transform: 'translateY(16px)' }}>
