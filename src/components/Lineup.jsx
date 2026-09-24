@@ -26,7 +26,7 @@ export default function Lineup() {
       <div className="wrap grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-16 items-center">
         <div className="reveal">
           <div className="sec-label">THE LINEUP</div>
-          <h2 style={{ fontSize: 'clamp(32px,4.4vw,52px)' }}>Nine events. Two tracks.</h2>
+          <h2 style={{ fontSize: 'clamp(32px,4.4vw,52px)' }}>Eight events. Two tracks.</h2>
           <ul className="list-none mt-6 p-0">
             {ALL.map((ev, i) => (
               <li
