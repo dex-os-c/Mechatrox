@@ -15,6 +15,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [activeHref, setActiveHref] = useState('')
+  const [brandLogoOk, setBrandLogoOk] = useState(true)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -59,15 +60,24 @@ export default function Navbar() {
         <CollegeBar />
         <nav className="wrap flex items-center justify-between h-[60px] md:h-[74px]">
           <a href="#" className="nav-brand flex items-center gap-2.5 relative z-10" onClick={() => setOpen(false)}>
-            <span className="nav-brand-mark">
-              <svg viewBox="0 0 30 30" fill="none" className="w-[18px] h-[18px] md:w-5 md:h-5 flex-shrink-0">
-                <rect x="9" y="9" width="12" height="12" stroke="#D9A441" strokeWidth="1.2" />
-                <line x1="15" y1="1" x2="15" y2="9" stroke="#C97A4A" strokeWidth="1.2" />
-                <line x1="15" y1="21" x2="15" y2="29" stroke="#C97A4A" strokeWidth="1.2" />
-                <line x1="1" y1="15" x2="9" y2="15" stroke="#C97A4A" strokeWidth="1.2" />
-                <line x1="21" y1="15" x2="29" y2="15" stroke="#C97A4A" strokeWidth="1.2" />
-                <circle cx="15" cy="15" r="2.4" fill="#D9A441" />
-              </svg>
+            <span className="nav-brand-mark flex-shrink-0">
+              {brandLogoOk ? (
+                <img
+                  src="/mechatroxlogo.png"
+                  alt="MECHATROX 2K26"
+                  className="h-7 md:h-9 w-auto object-contain"
+                  onError={() => setBrandLogoOk(false)}
+                />
+              ) : (
+                <svg viewBox="0 0 30 30" fill="none" className="w-[18px] h-[18px] md:w-5 md:h-5 flex-shrink-0">
+                  <rect x="9" y="9" width="12" height="12" stroke="#D9A441" strokeWidth="1.2" />
+                  <line x1="15" y1="1" x2="15" y2="9" stroke="#C97A4A" strokeWidth="1.2" />
+                  <line x1="15" y1="21" x2="15" y2="29" stroke="#C97A4A" strokeWidth="1.2" />
+                  <line x1="1" y1="15" x2="9" y2="15" stroke="#C97A4A" strokeWidth="1.2" />
+                  <line x1="21" y1="15" x2="29" y2="15" stroke="#C97A4A" strokeWidth="1.2" />
+                  <circle cx="15" cy="15" r="2.4" fill="#D9A441" />
+                </svg>
+              )}
             </span>
             <span className="leading-tight">
               <span className="font-mono text-[12.5px] md:text-[14.5px] font-bold tracking-[0.08em] block" style={{ color: 'var(--ink)' }}>

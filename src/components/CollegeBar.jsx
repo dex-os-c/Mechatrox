@@ -1,26 +1,38 @@
+import { useState } from 'react'
 import { eventInfo } from '../data/events'
 
 export default function CollegeBar() {
+  const [logoOk, setLogoOk] = useState(true)
+
   return (
     <div
-      className="wrap flex items-center justify-between gap-x-5 gap-y-1.5 py-2 flex-wrap"
+      className="wrap flex items-center justify-between gap-x-6 gap-y-2 py-2.5 flex-wrap"
       style={{ borderBottom: '1px solid var(--line)' }}
     >
-      <div className="flex items-center gap-3 min-w-0">
-        <span
-          className="flex items-center justify-center flex-shrink-0"
-          style={{ width: 28, height: 28, border: '1px solid var(--line-bright)', background: 'var(--pcb-1)' }}
-        >
-          <span className="font-mono font-bold leading-none" style={{ fontSize: 8, letterSpacing: '0.02em', color: 'var(--gold)' }}>
-            PMC
+      <div className="flex items-center gap-3.5 min-w-0">
+        {logoOk ? (
+          <img
+            src="/pmclogo.png"
+            alt="PMC Tech crest"
+            className="h-10 w-10 md:h-12 md:w-12 object-contain flex-shrink-0"
+            onError={() => setLogoOk(false)}
+          />
+        ) : (
+          <span
+            className="flex items-center justify-center flex-shrink-0"
+            style={{ width: 40, height: 40, border: '1px solid var(--line-bright)', background: 'var(--pcb-1)' }}
+          >
+            <span className="font-mono font-bold leading-none" style={{ fontSize: 11, letterSpacing: '0.02em', color: 'var(--gold)' }}>
+              PMC
+            </span>
           </span>
-        </span>
+        )}
         <div className="leading-tight min-w-0">
-          <span className="font-mono text-[10.5px] font-semibold tracking-[0.05em] block" style={{ color: 'var(--ink)' }}>
+          <span className="font-mono text-[11px] md:text-[12px] font-semibold tracking-[0.05em] block" style={{ color: 'var(--ink)' }}>
             {eventInfo.collegeShort.toUpperCase()}
             <span className="font-normal" style={{ color: 'var(--ink-faint)' }}> — {eventInfo.collegeTagline}</span>
           </span>
-          <span className="block text-[11px] leading-tight truncate max-w-[70vw] sm:max-w-none" style={{ color: 'var(--ink-dim)' }}>
+          <span className="block text-[11.5px] md:text-[12.5px] leading-snug" style={{ color: 'var(--ink-dim)' }}>
             {eventInfo.college}{eventInfo.autonomous ? ' (Autonomous)' : ''}
           </span>
         </div>
