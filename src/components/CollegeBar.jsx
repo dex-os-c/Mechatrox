@@ -11,7 +11,7 @@ export default function CollegeBar() {
           <img
             src="/pmc-crest.png"
             alt="PMC Tech crest"
-            className="h-[72px] md:h-24 w-auto object-contain flex-shrink-0"
+            className="h-14 md:h-20 w-auto object-contain flex-shrink-0"
             style={{ filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.5))' }}
             onError={() => setLogoOk(false)}
           />
@@ -31,12 +31,13 @@ export default function CollegeBar() {
           <span className="block text-[13px] md:text-[15px] leading-snug" style={{ color: 'var(--ink-dim)' }}>
             {eventInfo.college}{eventInfo.autonomous ? ' (Autonomous)' : ''}
           </span>
+          <span className="block font-mono text-[10px] md:text-[11px] leading-snug mt-0.5" style={{ color: 'var(--ink-faint)' }}>
+            {eventInfo.address}
+          </span>
         </div>
       </div>
 
       <div className="hidden lg:flex items-center gap-1.5 font-mono text-[9.5px] flex-shrink-0" style={{ color: 'var(--ink-faint)' }}>
-        <span>{eventInfo.address}</span>
-        <span>·</span>
         <span>{eventInfo.website}</span>
       </div>
 
