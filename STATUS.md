@@ -151,7 +151,36 @@ responsive mode) before merging — a `230vh` scrub-driven timeline is
 exactly the kind of thing that behaves very differently once mobile
 browser chrome (address bar show/hide) starts changing `100dvh` mid-scroll.
 
+## Branding: replaced cropped-logo college/mechatrox bars with actual emblems
+
+The uploaded `public/pmclogo.png` and `public/mechatroxlogo.png` were full
+lockups (crest + wordmark + tagline baked into one image, on solid
+white/black canvases) — not icon-only marks. Displaying them at nav-bar
+height alongside separately-coded text produced: a stray white rectangle
+(PMC logo's white canvas) floating on the dark theme, duplicate text (the
+image's own baked-in wordmark next to React's own copy of nearly the same
+words), and everything shrunk illegibly small to fit a ~40px-tall box.
+
+Fix: extracted just the icon/emblem from each source image and made their
+backgrounds transparent (flood-fill from the image corners, so each
+crest's own internal white shield-fill survives untouched) —
+`public/pmc-crest.png` and `public/mechatrox-emblem.png`. `CollegeBar.jsx`
+and `Navbar.jsx` now use these instead, sized larger (crest: 36→44px,
+Mechatrox mark: 44px with a soft gold radial glow behind it), with the
+code-rendered text redesigned around them instead of duplicating what was
+baked into the source images. Original two PNGs left in `public/` unused
+rather than deleted, in case the real vector/source files turn up later
+and someone wants to redo this properly instead of a cropped raster.
+
+Also: `npm install` was needed after pulling — `@supabase/supabase-js`
+landed in package.json in an earlier merge but hadn't been installed in
+this working copy, so build was failing on that alone (unrelated to the
+branding change).
+
+**Verified:** `npm run build` succeeds clean.
+
 ## Suggested non-overlapping split for Session B
+
 
 1. **Deploy + CI** (new files only): `.github/workflows/`, plus an OG image
    + `<meta property="og:image">` in `index.html`.

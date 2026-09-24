@@ -59,17 +59,19 @@ export default function Navbar() {
       >
         <CollegeBar />
         <nav className="wrap flex items-center justify-between h-[60px] md:h-[74px]">
-          <a href="#" className="nav-brand flex items-center gap-2.5 relative z-10" onClick={() => setOpen(false)}>
-            <span className="nav-brand-mark flex-shrink-0">
+          <a href="#" className="nav-brand flex items-center gap-3 relative z-10" onClick={() => setOpen(false)}>
+            <span className="nav-brand-mark flex-shrink-0 relative flex items-center justify-center" style={{ width: 44, height: 44 }}>
+              <span className="absolute inset-0 rounded-full" style={{ background: 'radial-gradient(circle, rgba(217,164,65,0.28) 0%, transparent 70%)' }} />
               {brandLogoOk ? (
                 <img
-                  src="/mechatroxlogo.png"
+                  src="/mechatrox-emblem.png"
                   alt="MECHATROX 2K26"
-                  className="h-7 md:h-9 w-auto object-contain"
+                  className="relative h-9 md:h-11 w-auto object-contain"
+                  style={{ filter: 'drop-shadow(0 0 8px rgba(217,164,65,0.35))' }}
                   onError={() => setBrandLogoOk(false)}
                 />
               ) : (
-                <svg viewBox="0 0 30 30" fill="none" className="w-[18px] h-[18px] md:w-5 md:h-5 flex-shrink-0">
+                <svg viewBox="0 0 30 30" fill="none" className="relative w-6 h-6 flex-shrink-0">
                   <rect x="9" y="9" width="12" height="12" stroke="#D9A441" strokeWidth="1.2" />
                   <line x1="15" y1="1" x2="15" y2="9" stroke="#C97A4A" strokeWidth="1.2" />
                   <line x1="15" y1="21" x2="15" y2="29" stroke="#C97A4A" strokeWidth="1.2" />
@@ -80,10 +82,10 @@ export default function Navbar() {
               )}
             </span>
             <span className="leading-tight">
-              <span className="font-mono text-[12.5px] md:text-[14.5px] font-bold tracking-[0.08em] block" style={{ color: 'var(--ink)' }}>
+              <span className="font-mono text-[14px] md:text-[16px] font-bold tracking-[0.09em] block" style={{ color: 'var(--ink)' }}>
                 {eventInfo.festName}
               </span>
-              <span className="hidden md:block font-mono text-[8.5px] tracking-[0.14em]" style={{ color: 'var(--ink-faint)' }}>
+              <span className="hidden md:block font-mono text-[8.5px] tracking-[0.16em]" style={{ color: 'var(--gold)' }}>
                 {eventInfo.department.toUpperCase()}
               </span>
             </span>

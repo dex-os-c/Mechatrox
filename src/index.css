@@ -91,8 +91,8 @@ p{ margin:0; }
 .li-tag{ margin-left:auto; font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.08em; color:var(--ink-faint); border:1px solid var(--line-bright); padding:3px 8px; white-space:nowrap; }
 @media (max-width:480px){ .li-tag{ display:none; } .lineup-item{ gap:12px; } }
 
-.nav-brand-mark{ display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border:1px solid var(--line-bright); background:var(--pcb-1); transition:border-color .25s ease; }
-.nav-brand:hover .nav-brand-mark{ border-color:var(--gold); }
+.nav-brand-mark{ display:inline-flex; align-items:center; justify-content:center; transition:transform .25s ease; }
+.nav-brand:hover .nav-brand-mark{ transform:scale(1.06); }
 
 .nav-pill{ padding:4px; border:1px solid var(--line); background:rgba(15,40,31,0.4); }
 .nav-link{ position:relative; font-size:13px; padding:8px 15px; color:var(--ink-dim); transition:color .25s ease, background .25s ease; }
