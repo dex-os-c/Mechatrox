@@ -12,12 +12,12 @@ import EventDetailModal from './components/EventDetailModal'
 import { technicalEvents, nonTechnicalEvents } from './data/events'
 import { useLenis } from './hooks/useLenis'
 
-// Hero, Lineup, and ScrollCompanion are the three.js / @react-three/fiber / drei
-// consumers. Splitting them into their own chunk keeps the main bundle well under
-// the 500kB warning instead of shipping the whole 3D stack in the initial payload.
+// Hero (and, inside it, PersistentRobot) and Lineup are the three.js /
+// @react-three/fiber / drei consumers. Splitting them into their own chunk
+// keeps the main bundle well under the 500kB warning instead of shipping
+// the whole 3D stack in the initial payload.
 const Hero = lazy(() => import('./components/Hero'))
 const Lineup = lazy(() => import('./components/Lineup'))
-const ScrollCompanion = lazy(() => import('./components/ScrollCompanion'))
 
 export default function App() {
   const [ready, setReady] = useState(false)
@@ -60,9 +60,6 @@ export default function App() {
     <>
       <Preloader onDone={() => setReady(true)} />
       <Cursor />
-      <Suspense fallback={null}>
-        <ScrollCompanion />
-      </Suspense>
       <Navbar />
       <Suspense fallback={<div style={{ minHeight: '100dvh' }} />}>
         <Hero ready={ready} />

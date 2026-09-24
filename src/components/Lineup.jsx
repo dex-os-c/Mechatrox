@@ -22,7 +22,7 @@ export default function Lineup({ onSelect }) {
   const ActiveIcon = ICONS[active.key]
 
   return (
-    <section id="lineup" className="py-16 md:py-28">
+    <section id="lineup" className="relative z-10 py-16 md:py-28">
       <div className="wrap grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-16 items-center">
         <div className="reveal">
           <div className="sec-label">THE LINEUP</div>

@@ -2,7 +2,7 @@ import { eventInfo } from '../data/events'
 
 export default function About() {
   return (
-    <section id="about" className="py-16 md:py-28">
+    <section id="about" className="relative z-10 py-16 md:py-28">
       <div className="wrap grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-10 md:gap-16 items-start">
         <div className="reveal">
           <div className="sec-label">ABOUT</div>

@@ -2,7 +2,7 @@ import { eventInfo, technicalEvents, nonTechnicalEvents } from '../data/events'
 
 export default function Footer() {
   return (
-    <footer id="contact" className="pt-16 md:pt-24" style={{ borderTop: '1px solid var(--line)' }}>
+    <footer id="contact" className="relative z-10 pt-16 md:pt-24" style={{ borderTop: '1px solid var(--line)' }}>
       <div className="wrap">
         <div className="flex justify-between items-end gap-6 flex-wrap pb-10 md:pb-16" style={{ borderBottom: '1px solid var(--line)' }}>
           <h2 className="max-w-2xl leading-tight" style={{ fontSize: 'clamp(30px,5vw,56px)' }}>

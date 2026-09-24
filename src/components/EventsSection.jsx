@@ -1,6 +1,6 @@
 export default function EventsSection({ id, trackLabel, title, sub, events, onSelect }) {
   return (
-    <section id={id} className="py-16 md:py-28">
+    <section id={id} className="relative z-10 py-16 md:py-28">
       <div className="wrap">
         <div className="flex justify-between items-end gap-10 mb-14 flex-wrap reveal">
           <div>

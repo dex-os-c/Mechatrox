@@ -5,7 +5,7 @@ export default function Marquee() {
   const line = items.join(' — ')
 
   return (
-    <div className="marquee-mask">
+    <div className="marquee-mask relative z-10">
       <div className="marquee-track">
         <span>{line}</span>
         <span>{line}</span>
