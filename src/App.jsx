@@ -8,16 +8,16 @@ import Marquee from './components/Marquee'
 import About from './components/About'
 import EventsSection from './components/EventsSection'
 import Footer from './components/Footer'
-import ScrollCompanion from './components/ScrollCompanion'
 import EventDetailModal from './components/EventDetailModal'
 import { technicalEvents, nonTechnicalEvents } from './data/events'
 import { useLenis } from './hooks/useLenis'
 
-// Hero and Lineup are the only two consumers of three.js / @react-three/fiber / drei.
-// Splitting them into their own chunk keeps the main bundle well under the 500kB warning
-// instead of shipping the whole 3D stack in the initial payload.
+// Hero, Lineup, and ScrollCompanion are the three.js / @react-three/fiber / drei
+// consumers. Splitting them into their own chunk keeps the main bundle well under
+// the 500kB warning instead of shipping the whole 3D stack in the initial payload.
 const Hero = lazy(() => import('./components/Hero'))
 const Lineup = lazy(() => import('./components/Lineup'))
+const ScrollCompanion = lazy(() => import('./components/ScrollCompanion'))
 
 export default function App() {
   const [ready, setReady] = useState(false)
@@ -60,7 +60,9 @@ export default function App() {
     <>
       <Preloader onDone={() => setReady(true)} />
       <Cursor />
-      <ScrollCompanion />
+      <Suspense fallback={null}>
+        <ScrollCompanion />
+      </Suspense>
       <Navbar />
       <Suspense fallback={<div style={{ minHeight: '100dvh' }} />}>
         <Hero ready={ready} />
