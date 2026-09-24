@@ -8,6 +8,7 @@ import Marquee from './components/Marquee'
 import About from './components/About'
 import EventsSection from './components/EventsSection'
 import Footer from './components/Footer'
+import ScrollCompanion from './components/ScrollCompanion'
 import EventDetailModal from './components/EventDetailModal'
 import { technicalEvents, nonTechnicalEvents } from './data/events'
 import { useLenis } from './hooks/useLenis'
@@ -59,6 +60,7 @@ export default function App() {
     <>
       <Preloader onDone={() => setReady(true)} />
       <Cursor />
+      <ScrollCompanion />
       <Navbar />
       <Suspense fallback={<div style={{ minHeight: '100dvh' }} />}>
         <Hero ready={ready} />
