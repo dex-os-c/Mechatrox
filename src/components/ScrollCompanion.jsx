@@ -86,19 +86,25 @@ export default function ScrollCompanion() {
         onClick={() => setPoke((p) => p + 1)}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setPoke((p) => p + 1) } }}
       >
-        <Canvas
-          camera={{ position: [0, 0.15, 3.15], fov: 28 }}
-          dpr={[1, 1.5]}
-          gl={{ alpha: true }}
-          style={{ background: 'transparent' }}
-        >
-          <ambientLight intensity={0.7} />
-          <directionalLight position={[2, 3, 2]} intensity={1.1} />
-          <pointLight position={[-1.5, 1, 1.5]} color="#D9A441" intensity={1.2} />
-          <Suspense fallback={null}>
-            <CompanionRobot mode={mode} poke={poke} />
-          </Suspense>
-        </Canvas>
+        {/* Canvas only mounts once the companion is actually needed — before that,
+            Hero's own Canvas is already the sole WebGL context on the page. Mobile
+            browsers (especially under battery saver) can silently refuse to create
+            an additional WebGL context, so avoid asking for one until we must. */}
+        {visible && (
+          <Canvas
+            camera={{ position: [0, 0.15, 3.15], fov: 28 }}
+            dpr={[1, 1.5]}
+            gl={{ alpha: true, powerPreference: 'low-power', failIfMajorPerformanceCaveat: false }}
+            style={{ background: 'transparent' }}
+          >
+            <ambientLight intensity={0.7} />
+            <directionalLight position={[2, 3, 2]} intensity={1.1} />
+            <pointLight position={[-1.5, 1, 1.5]} color="#D9A441" intensity={1.2} />
+            <Suspense fallback={null}>
+              <CompanionRobot mode={mode} poke={poke} />
+            </Suspense>
+          </Canvas>
+        )}
       </div>
 
       <style>{`
