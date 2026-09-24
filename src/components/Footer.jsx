@@ -1,6 +1,6 @@
 import { eventInfo, technicalEvents, nonTechnicalEvents } from '../data/events'
 
-export default function Footer() {
+export default function Footer({ onOpenRegister }) {
   return (
     <footer id="contact" className="relative z-10 pt-16 md:pt-24" style={{ borderTop: '1px solid var(--line)' }}>
       <div className="wrap">
@@ -8,7 +8,7 @@ export default function Footer() {
           <h2 className="max-w-2xl leading-tight" style={{ fontSize: 'clamp(30px,5vw,56px)' }}>
             Got a team? Bring them to {eventInfo.festName}.
           </h2>
-          <a href="#" className="btn filled">Register your team</a>
+          <button type="button" className="btn filled" onClick={onOpenRegister}>Register your team</button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] gap-10 py-10 md:py-14">
