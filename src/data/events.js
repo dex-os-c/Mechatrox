@@ -70,13 +70,13 @@ export const nonTechnicalEvents = [
   {
     code: 'NT.02',
     key: 'esports',
-    title: 'E-WARZONE',
+    title: 'E-WARZONE (BGMI, FREE FIRE)',
     tag: 'Squad',
-    desc: 'Bring your squad. Bracket-style knockouts, straight through to a final everyone in the room will have an opinion on.',
+    desc: 'Bring your squad. Bracket-style knockouts across BGMI and Free Fire, straight through to a final everyone in the room will have an opinion on.',
     details: [
       'Squad-based, bring your own team.',
       'Single/double-elimination bracket depending on entries.',
-      'Game and platform announced closer to the date — check the marquee/contact for updates.',
+      'Games: BGMI and Free Fire — check the marquee/contact for match schedule.',
       'Fair-play rules strictly enforced; disputes resolved by the on-floor referee.',
     ],
   },

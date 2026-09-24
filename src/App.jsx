@@ -63,7 +63,7 @@ export default function App() {
     <>
       <Preloader onDone={() => setReady(true)} />
       <Cursor />
-      <Navbar onOpenRegister={openRegister} />
+      <Navbar />
       <Suspense fallback={<div style={{ minHeight: '100dvh' }} />}>
         <Hero ready={ready} onOpenRegister={openRegister} />
       </Suspense>
