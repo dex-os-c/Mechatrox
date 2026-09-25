@@ -13,12 +13,23 @@ const SECTION_IDS = ['lineup', 'events-technical', 'events-nontechnical', 'conta
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const [open, setOpen] = useState(false)
   const [activeHref, setActiveHref] = useState('')
   const [brandLogoOk, setBrandLogoOk] = useState(true)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
+    let lastY = window.scrollY
+    const onScroll = () => {
+      const y = window.scrollY
+      setScrolled(y > 40)
+      // Slide the bar away once you're actually scrolling down past the
+      // hero, and bring it back the moment you scroll up even slightly —
+      // it was permanently fixed before, which meant the (now taller,
+      // two-row) header sat on top of content for the whole page.
+      setHidden(y > lastY && y > 140)
+      lastY = y
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -48,13 +59,14 @@ export default function Navbar() {
   return (
     <>
       <header
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out"
         style={{
           background: scrolled || open ? 'rgba(4,16,13,0.88)' : 'transparent',
           backdropFilter: scrolled || open ? 'blur(14px)' : 'none',
           borderBottom: `1px solid ${scrolled || open ? 'var(--line-bright)' : 'transparent'}`,
           boxShadow: scrolled ? '0 10px 30px -18px rgba(0,0,0,0.6)' : 'none',
           paddingTop: 'env(safe-area-inset-top, 0px)',
+          transform: hidden && !open ? 'translateY(-100%)' : 'translateY(0)',
         }}
       >
         <CollegeBar />
