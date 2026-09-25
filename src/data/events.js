@@ -129,7 +129,8 @@ export const eventInfo = {
     { name: 'Dr. Muthu Lakshmanan' },
   ],
   studentCoordinators: [
-    { name: 'Ram Prakash', phone: '93614 96147' },
+    { name: 'Ram Prakash', phone: '93614 96157' },
     { name: 'Venu Gopal', phone: '93425 05911' },
   ],
+  developers: ['Murugan .V', 'Deena .M', 'Rohith .R', 'Sanjana .R', 'Tejashwini .C'],
 }

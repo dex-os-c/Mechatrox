@@ -67,6 +67,15 @@ export default function Footer({ onOpenRegister }) {
             BACK TO TOP ↑
           </button>
         </div>
+
+        <div className="pb-8 font-mono text-[11px] text-center" style={{ color: 'var(--ink-faint)' }}>
+          <span>Website built by students of {eventInfo.department}, {eventInfo.collegeShort} — </span>
+          {eventInfo.developers.map((name, i) => (
+            <span key={name} style={{ color: 'var(--ink-dim)' }}>
+              {name}{i < eventInfo.developers.length - 1 ? ', ' : ''}
+            </span>
+          ))}
+        </div>
       </div>
     </footer>
   )
