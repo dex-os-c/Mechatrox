@@ -71,7 +71,7 @@ export default function Footer({ onOpenRegister }) {
         <div className="pb-8 font-mono text-[11px] text-center" style={{ color: 'var(--ink-faint)' }}>
           <span>Website built by students of {eventInfo.department}, {eventInfo.collegeShort} — </span>
           {eventInfo.developers.map((name, i) => (
-            <span key={name} style={{ color: 'var(--ink-dim)' }}>
+            <span key={name} className="font-semibold" style={{ color: 'var(--copper-bright)' }}>
               {name}{i < eventInfo.developers.length - 1 ? ', ' : ''}
             </span>
           ))}
