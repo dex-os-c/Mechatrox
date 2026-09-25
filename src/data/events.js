@@ -123,4 +123,13 @@ export const eventInfo = {
   day: 'Thursday',
   venue: 'West Block Auditorium, PMC Tech',
   entry: '₹200 / Head',
+  hod: { name: 'Dr. M. Sudhagar', title: 'ASP, Head of the Department' },
+  facultyCoordinators: [
+    { name: 'Ms. Jeba Shalin' },
+    { name: 'Dr. Muthu Lakshmanan' },
+  ],
+  studentCoordinators: [
+    { name: 'Ram Prakash', phone: '93614 96147' },
+    { name: 'Venu Gopal', phone: '93425 05911' },
+  ],
 }

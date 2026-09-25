@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { technicalEvents, nonTechnicalEvents, eventInfo } from '../data/events'
-import { supabase } from '../lib/supabaseClient'
+import { submitRegistration } from '../lib/api'
 
 const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year']
 
@@ -86,14 +86,9 @@ export default function RegisterModal({ open, onClose }) {
       .map(({ key, label }) => ({ role: label, ...members[key] }))
       .filter((m) => m.name.trim())
 
-    if (!supabase) {
-      setErrors(['Registration isn\u2019t connected to a database yet \u2014 set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY in your .env file.'])
-      return
-    }
-
     setSubmitting(true)
     try {
-      const { error } = await supabase.from('registrations').insert({
+      await submitRegistration({
         team_name: teamName,
         college,
         department,
@@ -101,7 +96,6 @@ export default function RegisterModal({ open, onClose }) {
         members: filledMembers,
         events: [techEvent, nontechEvent],
       })
-      if (error) throw error
       setSubmitted(true)
     } catch {
       setErrors(['Something went wrong sending your registration. Please check your connection and try again.'])

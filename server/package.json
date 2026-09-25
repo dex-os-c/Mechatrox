@@ -1,0 +1,17 @@
+{
+  "name": "mechatrox-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone backend for Mechatrox registrations, backed by a local SQLite .db file. Must run as a persistent Node process (not Netlify/Vercel serverless) — deploy on a VPS/Railway/Render, or run locally during the event.",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
