@@ -1,8 +1,5 @@
 import { useState } from 'react'
-
-const FUNCTION_URL = import.meta.env.VITE_SUPABASE_URL
-  ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-export`
-  : ''
+import { fetchRegistrations } from '../lib/api'
 
 function csvCell(v) {
   return `"${String(v ?? '').replace(/"/g, '""')}"`
@@ -40,7 +37,7 @@ const inputStyle = {
 const cellStyle = { borderBottom: '1px solid var(--line)', padding: '8px 10px', verticalAlign: 'top' }
 
 export default function AdminPage() {
-  const [id, setId] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [authed, setAuthed] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -53,23 +50,10 @@ export default function AdminPage() {
   const login = async (e) => {
     e.preventDefault()
     setError('')
-    if (!FUNCTION_URL) {
-      setError('VITE_SUPABASE_URL is not set in this build.')
-      return
-    }
     setLoading(true)
     try {
-      const res = await fetch(FUNCTION_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '',
-        },
-        body: JSON.stringify({ id, password }),
-      })
-      const body = await res.json()
-      if (!res.ok) throw new Error(body.error || 'Login failed')
-      setRows(body.data || [])
+      const data = await fetchRegistrations({ username, password })
+      setRows(data)
       setAuthed(true)
     } catch (err) {
       setError(err.message || 'Something went wrong.')
@@ -94,7 +78,7 @@ export default function AdminPage() {
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--pcb-0)', color: 'var(--ink)', fontFamily: 'var(--font-sans)' }}>
         <form onSubmit={login} style={{ width: 300, display: 'flex', flexDirection: 'column', gap: 12 }}>
           <h1 style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>Admin</h1>
-          <input value={id} onChange={(e) => setId(e.target.value)} placeholder="ID" autoComplete="off" style={inputStyle} />
+          <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" autoComplete="off" style={inputStyle} />
           <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" style={inputStyle} />
           {error && <div style={{ color: 'var(--danger)', fontSize: 13 }}>{error}</div>}
           <button type="submit" disabled={loading} className="btn filled">{loading ? 'Checking…' : 'Log in'}</button>

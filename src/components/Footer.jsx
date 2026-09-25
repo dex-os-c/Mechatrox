@@ -11,7 +11,7 @@ export default function Footer({ onOpenRegister }) {
           <button type="button" className="btn filled" onClick={onOpenRegister}>Register your team</button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] gap-10 py-10 md:py-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr_1.1fr] gap-10 py-10 md:py-14">
           <div>
             <h4 className="font-mono text-[11px] tracking-[0.1em] mb-4" style={{ color: 'var(--ink-faint)' }}>DEPARTMENT</h4>
             <p className="max-w-[280px] text-sm leading-relaxed" style={{ color: 'var(--ink)' }}>
@@ -35,6 +35,29 @@ export default function Footer({ onOpenRegister }) {
             <h4 className="font-mono text-[11px] tracking-[0.1em] mb-4" style={{ color: 'var(--ink-faint)' }}>VISIT</h4>
             <p className="text-sm mb-2.5" style={{ color: 'var(--ink-dim)' }}>{eventInfo.address}</p>
             <p className="text-sm mb-2.5" style={{ color: 'var(--ink-dim)' }}>{eventInfo.website}</p>
+          </div>
+          <div>
+            <h4 className="font-mono text-[11px] tracking-[0.1em] mb-4" style={{ color: 'var(--ink-faint)' }}>COORDINATORS</h4>
+            <p className="text-sm leading-snug mb-0.5" style={{ color: 'var(--ink)' }}>{eventInfo.hod.name}</p>
+            <p className="text-xs mb-3" style={{ color: 'var(--ink-faint)' }}>{eventInfo.hod.title}</p>
+
+            <p className="font-mono text-[10px] tracking-[0.08em] mb-1.5" style={{ color: 'var(--ink-faint)' }}>FACULTY</p>
+            {eventInfo.facultyCoordinators.map((f) => (
+              <p key={f.name} className="text-sm mb-1" style={{ color: 'var(--ink-dim)' }}>{f.name}</p>
+            ))}
+
+            <p className="font-mono text-[10px] tracking-[0.08em] mt-3 mb-1.5" style={{ color: 'var(--ink-faint)' }}>STUDENT</p>
+            {eventInfo.studentCoordinators.map((s) => (
+              <a
+                key={s.name}
+                href={`tel:+91${s.phone.replace(/\s/g, '')}`}
+                className="flex items-center justify-between gap-3 text-sm mb-1"
+                style={{ color: 'var(--ink-dim)' }}
+              >
+                <span>{s.name}</span>
+                <span className="font-mono text-xs" style={{ color: 'var(--copper-bright)' }}>{s.phone}</span>
+              </a>
+            ))}
           </div>
         </div>
 
