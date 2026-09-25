@@ -2,7 +2,7 @@ export const technicalEvents = [
   {
     code: 'TE.01',
     key: 'ppt',
-    title: 'THEORIX',
+    title: 'THEORIX (PAPER PRESENTATION)',
     tag: 'Present',
     desc: "Pitch a working idea, a research direction, or a problem you've actually solved. Ten minutes on stage, five minutes of questions you can't dodge.",
     details: [
@@ -15,7 +15,7 @@ export const technicalEvents = [
   {
     code: 'TE.02',
     key: 'quiz',
-    title: 'QUIZTRONIX',
+    title: 'QUIZTRONIX (QUIZ)',
     tag: 'Recall',
     desc: 'Rounds on electronics, robotics, and the occasional bit of internet-era trivia. Buzzers included, grudges optional.',
     details: [
@@ -28,7 +28,7 @@ export const technicalEvents = [
   {
     code: 'TE.03',
     key: 'expo',
-    title: 'INNOVERSE',
+    title: 'INNOVERSE (PROJECT EXPO)',
     tag: 'Showcase',
     desc: 'Bring a working build to the floor and defend it in front of judges who will actually try to break it.',
     details: [
@@ -41,7 +41,7 @@ export const technicalEvents = [
   {
     code: 'TE.04',
     key: 'mirror',
-    title: 'MIRROR VERSE',
+    title: 'MIRROR VERSE (WEB CREATION)',
     tag: 'Design',
     desc: 'Recreate a mechanism or a circuit from a reference you only get to study for a few minutes. Precision over guesswork.',
     details: [
@@ -57,7 +57,7 @@ export const nonTechnicalEvents = [
   {
     code: 'NT.01',
     key: 'ipl',
-    title: 'THE AUCTION WAR',
+    title: 'THE AUCTION WAR (IPL AUCTION)',
     tag: 'Strategy',
     desc: 'Draft a fantasy squad on a fixed purse, bid live against the room, and defend your picks when they inevitably backfire.',
     details: [
@@ -83,7 +83,7 @@ export const nonTechnicalEvents = [
   {
     code: 'NT.03',
     key: 'meme',
-    title: 'MEME MANIA',
+    title: 'MEME MANIA (JOKE MAKING)',
     tag: 'Creative',
     desc: 'Fast rounds, live prompts, and a crowd that will let you know immediately if the joke landed.',
     details: [
@@ -96,7 +96,7 @@ export const nonTechnicalEvents = [
   {
     code: 'NT.04',
     key: 'ad',
-    title: 'AD MAD SHOW',
+    title: 'AD MAD SHOW (ADVERTISEMENT)',
     tag: 'Pitch',
     desc: 'Sell something absurd. Teams get a prop and ninety seconds to convince a skeptical room to buy it.',
     details: [
