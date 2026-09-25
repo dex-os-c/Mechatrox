@@ -88,6 +88,9 @@ export default function App() {
         events={nonTechnicalEvents}
         onSelect={setSelectedEvent}
       />
+      <p className="wrap text-center font-mono text-[11px] tracking-[0.05em] -mt-8 md:-mt-14 mb-16" style={{ color: 'var(--ink-faint)' }}>
+        Judges' decision is final for all events.
+      </p>
       <Footer onOpenRegister={openRegister} />
       <EventDetailModal event={selectedEvent} onClose={() => setSelectedEvent(null)} onOpenRegister={openRegister} />
       <RegisterModal open={registerOpen} onClose={() => setRegisterOpen(false)} />

@@ -66,6 +66,12 @@ export default function EventDetailModal({ event, onClose, onOpenRegister }) {
           ))}
         </div>
 
+        <div className="px-7 md:px-10 pb-3">
+          <p className="font-mono text-[11px] tracking-[0.04em]" style={{ color: 'var(--ink-faint)' }}>
+            Judges' decision is final for this event.
+          </p>
+        </div>
+
         <div className="px-7 md:px-10 pb-9">
           <button type="button" className="btn filled" onClick={() => { onClose(); onOpenRegister() }}>Register for this event</button>
         </div>
