@@ -81,7 +81,19 @@ export default function PaperPlaneFlyby() {
 
   return (
     <div className="fixed inset-0 z-20 pointer-events-none" aria-hidden="true">
-      <Canvas camera={{ position: [0, 0, 10], fov: 34 }} dpr={[1, 1.5]} gl={{ alpha: true }} style={{ background: 'transparent' }}>
+      {/* react-three-fiber's <Canvas> hardcodes `pointerEvents: 'auto'` on its own
+          inner wrapper div (see CanvasImpl in @react-three/fiber), which wins over
+          the `pointer-events-none` Tailwind class on *our* outer div above -- an
+          inline style always beats an inherited value. Without this explicit
+          override, this full-viewport, always-mounted canvas silently swallows
+          every click underneath it that isn't in a stacking context above z-20
+          (Hero's own content sits at z-[2], Footer at z-10 -- both were affected). */}
+      <Canvas
+        camera={{ position: [0, 0, 10], fov: 34 }}
+        dpr={[1, 1.5]}
+        gl={{ alpha: true }}
+        style={{ background: 'transparent', pointerEvents: 'none' }}
+      >
         <ambientLight intensity={0.85} />
         <directionalLight position={[3, 4, 5]} intensity={1.15} />
         <pointLight position={[-2, 1, 3]} color="#D9A441" intensity={0.8} />

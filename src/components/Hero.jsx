@@ -22,7 +22,14 @@ import { eventInfo } from '../data/events'
 function PersistentRobot() {
   return (
     <div className="fixed inset-0 pointer-events-none">
-      <Canvas camera={{ position: [1.2, 1.3, 5.2], fov: 42 }} dpr={[1, 1.6]}>
+      {/* Same fix as PaperPlaneFlyby: react-three-fiber's <Canvas> hardcodes
+          pointerEvents:'auto' on its own inner div, which overrides this
+          wrapper's pointer-events-none. Not currently the cause of a visible
+          bug (this canvas has no explicit z-index, so it stacks below every
+          section that has z-10+), but the same override needs to be here too
+          so it can't start swallowing clicks the moment any future content
+          between Hero and Footer is added without its own z-10+. */}
+      <Canvas camera={{ position: [1.2, 1.3, 5.2], fov: 42 }} dpr={[1, 1.6]} style={{ pointerEvents: 'none' }}>
         <ambientLight intensity={0.55} />
         <directionalLight position={[3, 4, 2]} intensity={0.9} />
         <pointLight position={[-2, 1.5, 2]} color="#D9A441" intensity={1.6} />
