@@ -152,3 +152,146 @@ export function NetworkField() {
     </group>
   )
 }
+
+// --- Shooting stars ---------------------------------------------------
+//
+// A pool of streaks, each rendered as a single stretched quad (not a
+// particle system) with a horizontal gradient texture: transparent at
+// the trailing edge, bright at the leading edge. Additive blending on
+// top of the dark PCB background gives a glowing-comet look for free,
+// with no extra geometry per star.
+//
+// Every star in the pool runs its own independent spawn -> fly ->
+// fade -> cooldown -> respawn loop with fully randomised position,
+// angle, speed, length and colour, so it never reads as a fixed,
+// repeating pattern the way a single looping animation would.
+const STAR_COUNT = 12
+const STAR_COLORS = ['#D9A441', '#F5E9D3', '#C97A4A', '#FFFFFF']
+
+function useStreakTexture() {
+  return useMemo(() => {
+    const canvas = document.createElement('canvas')
+    canvas.width = 128
+    canvas.height = 16
+    const ctx = canvas.getContext('2d')
+    const grad = ctx.createLinearGradient(0, 0, 128, 0)
+    grad.addColorStop(0, 'rgba(255,255,255,0)')
+    grad.addColorStop(0.55, 'rgba(255,255,255,0.35)')
+    grad.addColorStop(1, 'rgba(255,255,255,1)')
+    ctx.fillStyle = grad
+    ctx.fillRect(0, 0, 128, 16)
+    const tex = new THREE.CanvasTexture(canvas)
+    tex.needsUpdate = true
+    return tex
+  }, [])
+}
+
+function makeStarState(initialDelay) {
+  return {
+    active: false,
+    delay: initialDelay,
+    pos: new THREE.Vector3(),
+    dir: new THREE.Vector3(1, 0, 0),
+    speed: 0,
+    length: 1,
+    life: 0,
+    duration: 1,
+  }
+}
+
+export function ShootingStars() {
+  const texture = useStreakTexture()
+
+  const geometry = useMemo(() => {
+    const geo = new THREE.PlaneGeometry(1, 1)
+    geo.translate(0.5, 0, 0) // local x: 0 = tail (transparent), 1 = head (bright)
+    return geo
+  }, [])
+
+  const materials = useMemo(
+    () => Array.from({ length: STAR_COUNT }, () => new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    })),
+    [texture]
+  )
+
+  const starsRef = useRef()
+  if (!starsRef.current) {
+    // Staggered initial delays so the whole pool doesn't fire in one
+    // burst on load -- they arrive spread out, like they've already
+    // been going for a while.
+    starsRef.current = Array.from({ length: STAR_COUNT }, (_, i) => makeStarState((i / STAR_COUNT) * 3 + Math.random() * 2))
+  }
+  const meshRefs = useRef([])
+
+  const spawn = (s, material) => {
+    const flip = Math.random() < 0.5 ? -1 : 1
+    const angle = -(0.28 + Math.random() * 0.4) // ~16-38deg below horizontal
+    s.dir.set(Math.cos(angle) * flip, Math.sin(angle), 0).normalize()
+    s.pos.set(
+      -flip * (5 + Math.random() * 4.5),
+      3 + Math.random() * 2.4,
+      -4.5 + Math.random() * 7
+    )
+    s.duration = 0.5 + Math.random() * 0.55
+    const travel = 9 + Math.random() * 8
+    s.speed = travel / s.duration
+    s.length = 1 + Math.random() * 2.1
+    s.life = 0
+    s.active = true
+    material.color.set(STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)])
+  }
+
+  useFrame((state, delta) => {
+    starsRef.current.forEach((s, i) => {
+      const mesh = meshRefs.current[i]
+      const material = materials[i]
+      if (!mesh) return
+
+      if (!s.active) {
+        s.delay -= delta
+        if (s.delay <= 0) spawn(s, material)
+        return
+      }
+
+      s.life += delta
+      s.pos.addScaledVector(s.dir, s.speed * delta)
+
+      const t = s.life / s.duration
+      let alpha
+      if (t < 0.12) alpha = t / 0.12
+      else if (t > 0.7) alpha = Math.max(0, (1 - t) / 0.3)
+      else alpha = 1
+      material.opacity = alpha
+
+      // mesh.position is the *tail* (local x=0), so offset back from the
+      // current head position by the streak's own length.
+      mesh.position.copy(s.pos).addScaledVector(s.dir, -s.length)
+      mesh.rotation.z = Math.atan2(s.dir.y, s.dir.x)
+      mesh.scale.set(s.length, 0.04 + s.length * 0.018, 1)
+
+      if (t >= 1) {
+        s.active = false
+        s.delay = 1 + Math.random() * 3.2
+        material.opacity = 0
+      }
+    })
+  })
+
+  return (
+    <group>
+      {starsRef.current.map((_, i) => (
+        <mesh
+          key={i}
+          ref={(m) => { meshRefs.current[i] = m }}
+          geometry={geometry}
+          material={materials[i]}
+        />
+      ))}
+    </group>
+  )
+}

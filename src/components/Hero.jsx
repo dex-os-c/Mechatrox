@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
 import gsap from 'gsap'
-import { RobotModel, NetworkField } from '../three/Hero3D'
+import { RobotModel, NetworkField, ShootingStars } from '../three/Hero3D'
 import { eventInfo } from '../data/events'
 
 // The robot used to live inside Hero's own `absolute inset-0` box, so it
@@ -34,6 +34,7 @@ function PersistentRobot() {
         <directionalLight position={[3, 4, 2]} intensity={0.9} />
         <pointLight position={[-2, 1.5, 2]} color="#D9A441" intensity={1.6} />
         <pointLight position={[2, -1, -2]} color="#C97A4A" intensity={1} />
+        <ShootingStars />
         <Suspense fallback={null}>
           <NetworkField />
           <RobotModel />
