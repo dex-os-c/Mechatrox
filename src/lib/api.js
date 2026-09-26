@@ -1,7 +1,8 @@
-// Points at the standalone server/ backend (see server/README or the repo
-// root README for how to run it). Must be a real running server — this
-// can't hit a bare .db file directly from the browser.
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000'
+// On Vercel, the frontend and the /api functions are the same deployment,
+// so same-origin ('') just works with no env var needed. Set
+// VITE_API_BASE_URL only for local dev when pointing at the standalone
+// server/ instead (e.g. http://localhost:4000).
+const API_BASE = import.meta.env.VITE_API_BASE_URL || ''
 
 export async function submitRegistration(payload) {
   const res = await fetch(`${API_BASE}/api/registrations`, {

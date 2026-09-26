@@ -17,12 +17,14 @@ dist-ssr
 .env.*
 !.env.example
 
-# Standalone server: its own env, and the real SQLite data file
+# Standalone server: its own env
 server/.env
-server/data/*.db
-server/data/*.db-*
-!server/data/.gitkeep
 server/node_modules
+
+# Local SQLite data file (repo root, shared by api/ and server/) — never commit real data
+data/*.db
+data/*.db-*
+!data/.gitkeep
 
 # Editor directories and files
 .vscode/*
