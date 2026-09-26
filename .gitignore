@@ -26,6 +26,11 @@ data/*.db
 data/*.db-*
 !data/.gitkeep
 
+# PythonAnywhere backend: never commit the real registration data or a venv
+pythonanywhere/mechatrox.db
+pythonanywhere/venv/
+pythonanywhere/__pycache__/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
