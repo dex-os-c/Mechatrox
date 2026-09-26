@@ -1,27 +1,40 @@
-// On Vercel, the frontend and the /api functions are the same deployment,
-// so same-origin ('') just works with no env var needed. Set
-// VITE_API_BASE_URL only for local dev when pointing at the standalone
-// server/ instead (e.g. http://localhost:4000).
-const API_BASE = import.meta.env.VITE_API_BASE_URL || ''
+import { supabase } from './supabaseClient'
+
+// Client-side only "auth" -- there's no server left to check this
+// server-side (see supabaseClient.js for why). Treat the registrations
+// table as effectively public data; this is just a soft gate on the UI,
+// not real access control.
+const ADMIN_USERNAME = 'admin'
+const ADMIN_PASSWORD = '2k26'
 
 export async function submitRegistration(payload) {
-  const res = await fetch(`${API_BASE}/api/registrations`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  })
-  const body = await res.json().catch(() => ({}))
-  if (!res.ok) throw new Error(body.error || 'Failed to submit registration.')
-  return body
+  const { data, error } = await supabase
+    .from('registrations')
+    .insert({
+      team_name: payload.team_name,
+      college: payload.college,
+      department: payload.department,
+      year: payload.year,
+      members: payload.members,
+      events: payload.events,
+    })
+    .select('id')
+    .single()
+
+  if (error) throw new Error(error.message || 'Failed to submit registration.')
+  return { id: data.id }
 }
 
 export async function fetchRegistrations({ username, password }) {
-  const res = await fetch(`${API_BASE}/api/admin/registrations`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
-  })
-  const body = await res.json().catch(() => ({}))
-  if (!res.ok) throw new Error(body.error || 'Login failed.')
-  return body.data || []
+  if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+    throw new Error('Invalid credentials.')
+  }
+
+  const { data, error } = await supabase
+    .from('registrations')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error) throw new Error(error.message || 'Failed to read registrations.')
+  return data || []
 }
