@@ -67,7 +67,7 @@ export default function App() {
       <Suspense fallback={null}>
         <PaperPlaneFlyby />
       </Suspense>
-      <Navbar />
+      <Navbar onOpenRegister={openRegister} />
       <Suspense fallback={<div style={{ minHeight: '100dvh' }} />}>
         <Hero ready={ready} onOpenRegister={openRegister} />
       </Suspense>

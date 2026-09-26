@@ -11,7 +11,7 @@ const LINKS = [
 
 const SECTION_IDS = ['lineup', 'events-technical', 'events-nontechnical', 'contact']
 
-export default function Navbar() {
+export default function Navbar({ onOpenRegister }) {
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [open, setOpen] = useState(false)
@@ -119,6 +119,7 @@ export default function Navbar() {
             <span className="font-mono text-[10.5px] tracking-[0.1em]" style={{ color: 'var(--ink-faint)' }}>
               {eventInfo.date}
             </span>
+            <button type="button" className="btn filled" onClick={onOpenRegister}>Register your team</button>
           </div>
 
           <button
@@ -164,6 +165,19 @@ export default function Navbar() {
             </a>
           ))}
         </div>
+
+        <button
+          type="button"
+          className="btn filled self-start mt-8 relative z-10"
+          style={{
+            transition: `opacity .35s ease ${open ? LINKS.length * 0.06 + 0.14 : 0}s, transform .35s ease ${open ? LINKS.length * 0.06 + 0.14 : 0}s`,
+            opacity: open ? 1 : 0,
+            transform: open ? 'translateY(0)' : 'translateY(8px)',
+          }}
+          onClick={() => { setOpen(false); onOpenRegister() }}
+        >
+          Register your team
+        </button>
       </div>
     </>
   )
