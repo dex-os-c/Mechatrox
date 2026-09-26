@@ -35,6 +35,15 @@ export default function Footer({ onOpenRegister }) {
             <h4 className="font-mono text-[11px] tracking-[0.1em] mb-4" style={{ color: 'var(--ink-faint)' }}>VISIT</h4>
             <p className="text-sm mb-2.5" style={{ color: 'var(--ink-dim)' }}>{eventInfo.address}</p>
             <p className="text-sm mb-2.5" style={{ color: 'var(--ink-dim)' }}>{eventInfo.website}</p>
+            <a href={`mailto:${eventInfo.email}`} className="block text-sm mb-2.5" style={{ color: 'var(--ink-dim)' }}>{eventInfo.email}</a>
+            <a
+              href={`https://instagram.com/${eventInfo.instagram}`}
+              target="_blank" rel="noopener"
+              className="text-sm"
+              style={{ color: 'var(--ink-dim)' }}
+            >
+              @{eventInfo.instagram}
+            </a>
           </div>
           <div>
             <h4 className="font-mono text-[11px] tracking-[0.1em] mb-4" style={{ color: 'var(--ink-faint)' }}>COORDINATORS</h4>

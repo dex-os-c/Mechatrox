@@ -168,8 +168,11 @@ export default function RegisterModal({ open, onClose }) {
             <h3 id="register-modal-title" className="font-bold leading-[0.98] mb-3" style={{ fontSize: 'clamp(28px,5vw,42px)' }}>
               {eventInfo.festName}
             </h3>
-            <p className="font-mono text-[11.5px] tracking-[0.06em] mb-8" style={{ color: 'var(--ink-faint)' }}>
+            <p className="font-mono text-[11.5px] tracking-[0.06em] mb-3" style={{ color: 'var(--ink-faint)' }}>
               {eventInfo.date} ({eventInfo.day}) · {eventInfo.venue} · {eventInfo.entry}
+            </p>
+            <p className="font-mono text-[11px] tracking-[0.04em] mb-8" style={{ color: 'var(--copper-bright)' }}>
+              Online registration closes {eventInfo.regDeadline} · Spot registration also available
             </p>
 
             {errors.length > 0 && (

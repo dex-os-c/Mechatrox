@@ -123,9 +123,11 @@ export const eventInfo = {
   day: 'Thursday',
   venue: 'West Block Auditorium, PMC Tech',
   entry: '₹200 / Head',
-  // TODO(owner): replace with the real UPI ID and drop the actual QR image
-  // in at public/payment-qr.png (referenced directly in RegisterModal.jsx).
-  upiId: 'yourupiid@bank',
+  regDeadline: '22.10.2026',
+  spotRegistrationAvailable: true,
+  upiId: 'rvramprakas35@oksbi',
+  email: 'mechatrox2k26@gmail.com',
+  instagram: 'mechatrox2k26',
   hod: { name: 'Dr. M. Sudhagar', title: 'ASP, Head of the Department' },
   facultyCoordinators: [
     { name: 'Ms. Jeba Shalin' },
