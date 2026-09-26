@@ -177,22 +177,22 @@ export default function RegisterModal({ open, onClose }) {
             )}
 
             <div className="reg-field">
-              <label className="reg-label">Team name *</label>
-              <input className="reg-input" value={teamName} onChange={(e) => setTeamName(e.target.value)} placeholder="Your answer" />
+              <label className="reg-label" htmlFor="reg-team-name">Team name *</label>
+              <input id="reg-team-name" name="team_name" className="reg-input" value={teamName} onChange={(e) => setTeamName(e.target.value)} placeholder="Your answer" />
             </div>
 
             <div className="reg-field">
-              <label className="reg-label">College / institution *</label>
-              <input className="reg-input" value={college} onChange={(e) => setCollege(e.target.value)} placeholder="Your answer" />
+              <label className="reg-label" htmlFor="reg-college">College / institution *</label>
+              <input id="reg-college" name="college" className="reg-input" value={college} onChange={(e) => setCollege(e.target.value)} placeholder="Your answer" />
             </div>
 
             <div className="reg-field">
-              <label className="reg-label">Department *</label>
-              <input className="reg-input" value={department} onChange={(e) => setDepartment(e.target.value)} placeholder="Your answer" />
+              <label className="reg-label" htmlFor="reg-department">Department *</label>
+              <input id="reg-department" name="department" className="reg-input" value={department} onChange={(e) => setDepartment(e.target.value)} placeholder="Your answer" />
             </div>
 
             <div className="reg-field">
-              <label className="reg-label">Year of study *</label>
+              <p className="reg-label">Year of study *</p>
               <div className="flex gap-2 flex-wrap mt-2">
                 {YEARS.map((y) => (
                   <button
@@ -212,22 +212,22 @@ export default function RegisterModal({ open, onClose }) {
                 <p className="reg-member-title">{label}{required ? ' *' : ''}</p>
                 {!required && <p className="reg-member-sub">Optional — leave blank if your team doesn't have this member.</p>}
                 <div className="reg-field">
-                  <label className="reg-label">Name{required ? ' *' : ''}</label>
-                  <input className="reg-input" value={members[key].name} onChange={(e) => setMemberField(key, 'name', e.target.value)} placeholder="Your answer" />
+                  <label className="reg-label" htmlFor={`reg-${key}-name`}>Name{required ? ' *' : ''}</label>
+                  <input id={`reg-${key}-name`} name={`${key}_name`} className="reg-input" value={members[key].name} onChange={(e) => setMemberField(key, 'name', e.target.value)} placeholder="Your answer" />
                 </div>
                 <div className="reg-field">
-                  <label className="reg-label">Mobile no.{required ? ' *' : ''}</label>
-                  <input className="reg-input" value={members[key].mobile} onChange={(e) => setMemberField(key, 'mobile', e.target.value)} placeholder="Your answer" inputMode="numeric" />
+                  <label className="reg-label" htmlFor={`reg-${key}-mobile`}>Mobile no.{required ? ' *' : ''}</label>
+                  <input id={`reg-${key}-mobile`} name={`${key}_mobile`} className="reg-input" value={members[key].mobile} onChange={(e) => setMemberField(key, 'mobile', e.target.value)} placeholder="Your answer" inputMode="numeric" />
                 </div>
                 <div className="reg-field">
-                  <label className="reg-label">Email{required ? ' *' : ''}</label>
-                  <input className="reg-input" value={members[key].email} onChange={(e) => setMemberField(key, 'email', e.target.value)} placeholder="Your answer" type="email" />
+                  <label className="reg-label" htmlFor={`reg-${key}-email`}>Email{required ? ' *' : ''}</label>
+                  <input id={`reg-${key}-email`} name={`${key}_email`} className="reg-input" value={members[key].email} onChange={(e) => setMemberField(key, 'email', e.target.value)} placeholder="Your answer" type="email" />
                 </div>
               </div>
             ))}
 
             <div className="reg-field">
-              <label className="reg-label">Events * <span className="reg-hint">— choose 1 Technical and 1 Non-technical</span></label>
+              <p className="reg-label">Events * <span className="reg-hint">— choose 1 Technical and 1 Non-technical</span></p>
 
               <p className="reg-group-label mt-4">Technical</p>
               {technicalEvents.map((ev) => (
