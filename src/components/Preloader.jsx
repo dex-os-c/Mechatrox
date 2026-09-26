@@ -1,5 +1,5 @@
-import { Suspense, useEffect, useRef, useState } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
 import { useGLTF, useAnimations, useProgress } from '@react-three/drei'
 import * as THREE from 'three'
 
@@ -13,7 +13,21 @@ function PreloaderRobot({ onWaveDone }) {
   const group = useRef()
   const { scene, animations } = useGLTF('/models/robot.glb')
   const { actions, names } = useAnimations(animations, group)
+  const { viewport } = useThree()
   const firedRef = useRef(false)
+
+  // Same responsive-sizing approach as Hero3D's RobotModel: measure the
+  // model's real bounding-box height and fit it to a fraction of the
+  // *actual visible viewport* (in three.js world units) instead of a
+  // hardcoded scale number. A fixed scale only ever looks right on
+  // whichever single aspect ratio it was eyeballed on — which is exactly
+  // what made this render small/off-frame on a real phone.
+  const modelHeight = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(scene)
+    return box.getSize(new THREE.Vector3()).y || 1
+  }, [scene])
+  const targetHeight = viewport.height * 0.95
+  const scale = targetHeight / modelHeight
 
   useEffect(() => {
     if (!names.length) return undefined
@@ -43,7 +57,7 @@ function PreloaderRobot({ onWaveDone }) {
   }, [actions, names, onWaveDone])
 
   return (
-    <group ref={group} position={[0, -1.35, 0]} scale={2.05} rotation={[0, -0.4, 0]}>
+    <group ref={group} position={[0, -targetHeight / 2 + targetHeight * 0.08, 0]} scale={scale} rotation={[0, -0.4, 0]}>
       <primitive object={scene} />
     </group>
   )
