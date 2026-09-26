@@ -9,8 +9,12 @@ create table if not exists public.registrations (
   department  text not null,
   year        text not null,
   members     jsonb not null,
-  events      jsonb not null
+  events      jsonb not null,
+  payment_id  text
 );
+
+-- If the table already exists from before this column was added, run:
+-- alter table public.registrations add column if not exists payment_id text;
 
 alter table public.registrations enable row level security;
 

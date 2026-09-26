@@ -26,6 +26,7 @@ export default function RegisterModal({ open, onClose }) {
   const [members, setMembers] = useState({ m1: { ...emptyMember }, m2: { ...emptyMember }, m3: { ...emptyMember }, m4: { ...emptyMember } })
   const [techEvent, setTechEvent] = useState('')
   const [nontechEvent, setNontechEvent] = useState('')
+  const [paymentId, setPaymentId] = useState('')
   const [openDesc, setOpenDesc] = useState(null)
   const [errors, setErrors] = useState([])
   const [submitting, setSubmitting] = useState(false)
@@ -53,6 +54,7 @@ export default function RegisterModal({ open, onClose }) {
     setTeamName(''); setCollege(''); setDepartment(''); setYear('')
     setMembers({ m1: { ...emptyMember }, m2: { ...emptyMember }, m3: { ...emptyMember }, m4: { ...emptyMember } })
     setTechEvent(''); setNontechEvent('')
+    setPaymentId('')
     setErrors([]); setSubmitted(false)
   }
 
@@ -78,6 +80,7 @@ export default function RegisterModal({ open, onClose }) {
 
     if (!techEvent) errs.push('Select one Technical event.')
     if (!nontechEvent) errs.push('Select one Non-technical event.')
+    if (!paymentId.trim()) errs.push('Enter the payment / transaction ID after paying via the QR code.')
 
     setErrors(errs)
     if (errs.length) return
@@ -95,6 +98,7 @@ export default function RegisterModal({ open, onClose }) {
         year,
         members: filledMembers,
         events: [techEvent, nontechEvent],
+        payment_id: paymentId.trim(),
       })
       setSubmitted(true)
     } catch {
@@ -139,8 +143,8 @@ export default function RegisterModal({ open, onClose }) {
               You're in, {teamName || 'team'}.
             </h3>
             <p className="text-[15px] leading-relaxed max-w-[440px] mx-auto" style={{ color: 'var(--ink-dim)' }}>
-              This form only registers interest — it doesn't collect payment. Entry fee ({eventInfo.entry}) will be
-              collected after registration, through online or offline mode.
+              Your registration and payment reference have been recorded. We'll verify the payment and confirm
+              your slot ({eventInfo.entry} per head).
             </p>
 
             <a
@@ -258,9 +262,33 @@ export default function RegisterModal({ open, onClose }) {
               ))}
             </div>
 
-            <p className="text-[12.5px] leading-relaxed mt-8" style={{ color: 'var(--ink-faint)' }}>
-              This form is only to register interested participants — it doesn't collect payment. Entry fee
-              ({eventInfo.entry}) will be collected after registration, through online or offline mode.
+            <div className="reg-field mt-8" style={{ border: '1px solid var(--line-bright)', padding: '18px 16px' }}>
+              <p className="reg-label" style={{ color: 'var(--copper-bright)' }}>Payment *</p>
+              <p className="text-[12.5px] leading-relaxed mt-1 mb-4" style={{ color: 'var(--ink-faint)' }}>
+                Scan the QR below to pay the entry fee ({eventInfo.entry}), then enter the transaction /
+                reference ID from your payment app.
+              </p>
+              <img
+                src="/payment-qr.png"
+                alt="Payment QR code"
+                style={{ width: 180, height: 180, objectFit: 'contain', background: '#fff', display: 'block', margin: '0 auto 10px' }}
+              />
+              <p className="text-center font-mono text-[12px] mb-4" style={{ color: 'var(--ink-dim)' }}>
+                UPI ID: {eventInfo.upiId}
+              </p>
+              <label className="reg-label" htmlFor="reg-payment-id">Payment / transaction ID *</label>
+              <input
+                id="reg-payment-id"
+                name="payment_id"
+                className="reg-input"
+                value={paymentId}
+                onChange={(e) => setPaymentId(e.target.value)}
+                placeholder="e.g. 123456789012"
+              />
+            </div>
+
+            <p className="text-[12.5px] leading-relaxed mt-6" style={{ color: 'var(--ink-faint)' }}>
+              Registration is confirmed once payment is verified. Keep your payment screenshot until then.
             </p>
 
             <button type="submit" className="btn filled mt-7" disabled={submitting}>

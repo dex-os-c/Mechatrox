@@ -17,6 +17,7 @@ export async function submitRegistration(payload) {
       year: payload.year,
       members: payload.members,
       events: payload.events,
+      payment_id: payload.payment_id,
     })
     .select('id')
     .single()
