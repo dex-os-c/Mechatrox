@@ -26,7 +26,7 @@ export default function CollegeBar() {
         <span className="hidden sm:block w-px self-stretch flex-shrink-0" style={{ background: 'var(--line-bright)' }} />
         <div className="leading-tight min-w-0">
           <span className="font-mono text-[12px] md:text-[14px] font-bold tracking-[0.14em] block" style={{ color: 'var(--gold)' }}>
-            {eventInfo.collegeShort.toUpperCase()} <span className="font-normal" style={{ color: 'var(--ink-faint)' }}>· {eventInfo.collegeTagline}</span>
+            &nbsp;
           </span>
           <span className="block text-[13px] md:text-[15px] leading-snug" style={{ color: 'var(--ink-dim)' }}>
             {eventInfo.college}{eventInfo.autonomous ? ' (Autonomous)' : ''}
