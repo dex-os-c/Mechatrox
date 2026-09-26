@@ -13,8 +13,10 @@ create table if not exists public.registrations (
   payment_id  text
 );
 
--- If the table already exists from before this column was added, run:
--- alter table public.registrations add column if not exists payment_id text;
+-- Safe to re-run: if the table already existed from before payment_id was
+-- added, this adds it now instead of silently no-op'ing like the
+-- `create table if not exists` above would.
+alter table public.registrations add column if not exists payment_id text;
 
 alter table public.registrations enable row level security;
 
