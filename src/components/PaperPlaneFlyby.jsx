@@ -7,23 +7,49 @@ const CYCLE_S = 7
 function FlyingPlane({ reduceMotion }) {
   const group = useRef()
   const { viewport } = useThree()
+  // Holds the randomised parameters for whichever pass is currently in
+  // flight. Re-rolled once per cycle (below), not per-frame -- so the
+  // plane's path stays consistent for the full 7s of one pass, but every
+  // new pass gets a genuinely different side, altitude, and arc.
+  const passRef = useRef({ index: -1, fromRight: false, startY: 0, endY: 0, arcHeight: 0, wobbleSeed: 0 })
 
   useFrame((state) => {
     if (!group.current) return
     const elapsed = state.clock.elapsedTime
     const cycleIndex = Math.floor(elapsed / CYCLE_S)
     const t = (elapsed % CYCLE_S) / CYCLE_S // 0 -> 1 across this pass
-    const goingRight = cycleIndex % 2 === 0 // alternate direction each pass
+
+    if (passRef.current.index !== cycleIndex) {
+      // New pass starting -- roll fresh randoms for it. Altitude band is
+      // biased toward the upper half of the screen (planes flying low
+      // through body text reads as a bug, not a feature) but the exact
+      // start/end height, which side it starts from, and the arc shape
+      // are all randomised independently each time.
+      const bandTop = viewport.height * 0.42
+      const bandBottom = viewport.height * 0.02
+      passRef.current = {
+        index: cycleIndex,
+        fromRight: Math.random() < 0.5,
+        startY: bandBottom + Math.random() * (bandTop - bandBottom),
+        endY: bandBottom + Math.random() * (bandTop - bandBottom),
+        arcHeight: viewport.height * (0.08 + Math.random() * 0.22),
+        wobbleSeed: Math.random() * Math.PI * 2,
+      }
+    }
+    const pass = passRef.current
+    const goingRight = !pass.fromRight
 
     const halfW = viewport.width / 2 + 1.4
     const startX = goingRight ? -halfW : halfW
     const endX = goingRight ? halfW : -halfW
     const x = startX + (endX - startX) * t
 
-    // A gentle arc (rises then dips) plus a couple of playful bobs along
-    // the pass, rather than a flat straight-line crossing.
-    const baseY = viewport.height * 0.16
-    const y = baseY + Math.sin(t * Math.PI) * (viewport.height * 0.22) + Math.sin(t * Math.PI * 5) * 0.12
+    // Straight-line interpolation between this pass's random start/end
+    // altitude, plus a rise-then-dip arc and a couple of playful bobs on
+    // top -- not a flat crossing at a fixed height every time.
+    const y = pass.startY + (pass.endY - pass.startY) * t
+      + Math.sin(t * Math.PI) * pass.arcHeight
+      + Math.sin(t * Math.PI * 5 + pass.wobbleSeed) * 0.12
 
     group.current.position.set(x, y, 0)
     // Nose is authored along +X in the model itself (see PaperPlaneModel's
@@ -34,7 +60,7 @@ function FlyingPlane({ reduceMotion }) {
     // Small banking wobble around the camera-facing axis (Z) -- rocks the
     // wings side to side like a glider catching air, without ever tipping
     // the flat face away from the camera.
-    group.current.rotation.z = reduceMotion ? 0 : Math.sin(t * Math.PI * 5) * 0.18
+    group.current.rotation.z = reduceMotion ? 0 : Math.sin(t * Math.PI * 5 + pass.wobbleSeed) * 0.18
   })
 
   return (
