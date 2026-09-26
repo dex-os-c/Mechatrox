@@ -26,13 +26,19 @@ function FlyingPlane({ reduceMotion }) {
     const y = baseY + Math.sin(t * Math.PI) * (viewport.height * 0.22) + Math.sin(t * Math.PI * 5) * 0.12
 
     group.current.position.set(x, y, 0)
-    group.current.rotation.y = goingRight ? -Math.PI / 2.3 : Math.PI - Math.PI / 2.3
-    group.current.rotation.x = -0.18 + Math.sin(t * Math.PI) * 0.1
-    group.current.rotation.z = reduceMotion ? 0 : Math.sin(t * Math.PI * 5) * 0.14
+    // Nose is authored along +X in the model itself (see PaperPlaneModel's
+    // comment), so "face right" is 0 and "face left" is a clean 180°
+    // mirror-flip -- no arbitrary angles, and the flat dart shape always
+    // stays face-on to this camera instead of ever swinging edge-on to it.
+    group.current.rotation.y = goingRight ? 0 : Math.PI
+    // Small banking wobble around the camera-facing axis (Z) -- rocks the
+    // wings side to side like a glider catching air, without ever tipping
+    // the flat face away from the camera.
+    group.current.rotation.z = reduceMotion ? 0 : Math.sin(t * Math.PI * 5) * 0.18
   })
 
   return (
-    <group ref={group} scale={0.62}>
+    <group ref={group} scale={0.4}>
       <PaperPlaneModel />
     </group>
   )

@@ -8,42 +8,40 @@ import * as THREE from 'three'
 // hand-authored instead, same approach already used for the event icons
 // in EventIcons.jsx.
 //
-// Layout (nose points toward +Z, plane sits flat-ish in XZ, wings crease
-// upward from the centre spine so it actually reads as *folded* paper
-// rather than a flat triangle):
-//
-//        nose (0,0, 1.05)
-//         /|\
-//        / | \
-//   wingL  |  wingR
-//   tip     |    tip
-//      \    |    /
-//       backL/backR   <- trailing edge of each wing
-//         \  |  /
-//        spineBack ---- tailL/tailR (small raised centre fin)
+// Axis convention -- chosen deliberately for the overlay camera this flies
+// in front of, which looks straight down -Z at the screen:
+//   X = nose-to-tail (the direction of travel, left/right across screen)
+//   Y = wingtip-to-wingtip (up/down on screen -- this is what makes the
+//       dart shape actually readable face-on to the camera)
+//   Z = fold thickness (tiny -- just enough for the crease/fin to catch
+//       light; deliberately NOT the axis that carries the silhouette)
+// Flying it is then just rotation.y of 0 (nose at +X) or Math.PI (nose at
+// -X, a clean mirror-flip since the shape is symmetric) -- no arbitrary
+// angles, and the flat face always stays pointed at the camera instead of
+// ever going edge-on.
 function buildGeometry() {
-  const nose = [0, 0, 1.05]
-  const spineBack = [0, -0.05, -0.85]
-  const spineTop = [0, 0.22, -0.55]
-  const wingLtip = [-1.0, -0.06, -0.5]
-  const wingLback = [-0.22, -0.06, -0.85]
-  const wingRtip = [1.0, -0.06, -0.5]
-  const wingRback = [0.22, -0.06, -0.85]
-  const tailL = [-0.1, 0.1, -0.85]
-  const tailR = [0.1, 0.1, -0.85]
+  const nose = [1.05, 0, 0.02]
+  const spineBack = [-0.85, 0, -0.05]
+  const spineTop = [-0.55, 0, 0.22]
+  const wingTipTop = [-0.5, 1.0, -0.06]
+  const wingBackTop = [-0.85, 0.22, -0.06]
+  const wingTipBottom = [-0.5, -1.0, -0.06]
+  const wingBackBottom = [-0.85, -0.22, -0.06]
+  const tailTop = [-0.85, 0.1, 0.1]
+  const tailBottom = [-0.85, -0.1, 0.1]
 
   // prettier-ignore
   const verts = [
-    // left wing, top+bottom (thin double-sided fold)
-    ...nose, ...wingLback, ...wingLtip,
-    ...nose, ...spineBack, ...wingLback,
-    // right wing
-    ...nose, ...wingRtip, ...wingRback,
-    ...nose, ...wingRback, ...spineBack,
-    // centre fin (small raised crease down the spine, gives it a folded
-    // silhouette from the side instead of reading as perfectly flat)
-    ...spineTop, ...spineBack, ...tailL,
-    ...spineTop, ...tailR, ...spineBack,
+    // "top" wing (upper half, +Y), two tris for a slight fold
+    ...nose, ...wingBackTop, ...wingTipTop,
+    ...nose, ...spineBack, ...wingBackTop,
+    // "bottom" wing (lower half, -Y)
+    ...nose, ...wingTipBottom, ...wingBackBottom,
+    ...nose, ...wingBackBottom, ...spineBack,
+    // centre fin -- a small crease raised in +Z so it reads as folded
+    // paper rather than a perfectly flat cutout
+    ...spineTop, ...spineBack, ...tailTop,
+    ...spineTop, ...tailBottom, ...spineBack,
   ]
 
   const geo = new THREE.BufferGeometry()
@@ -56,9 +54,8 @@ export default function PaperPlaneModel() {
   const geometry = useMemo(() => buildGeometry(), [])
   return (
     <mesh geometry={geometry}>
-      {/* DoubleSide: this hand-wound geometry doesn't need perfectly
-          consistent winding to guarantee every face stays visible from
-          both sides -- cheap insurance on a ~6-triangle mesh. */}
+      {/* DoubleSide: cheap insurance on a ~6-triangle mesh so no face
+          goes invisible from a viewing angle winding order didn't expect. */}
       <meshStandardMaterial color="#F2ECDD" roughness={0.82} metalness={0.02} side={THREE.DoubleSide} />
     </mesh>
   )
