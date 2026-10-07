@@ -7,6 +7,7 @@ import Navbar from './components/Navbar'
 import Marquee from './components/Marquee'
 import About from './components/About'
 import EventsSection from './components/EventsSection'
+import GeneralRules from './components/GeneralRules'
 import Footer from './components/Footer'
 import EventDetailModal from './components/EventDetailModal'
 import RegisterModal from './components/RegisterModal'
@@ -92,9 +93,7 @@ export default function App() {
         events={nonTechnicalEvents}
         onSelect={setSelectedEvent}
       />
-      <p className="wrap text-center font-mono text-[11px] tracking-[0.05em] -mt-8 md:-mt-14 mb-16" style={{ color: 'var(--ink-faint)' }}>
-        Judges' decision is final for all events.
-      </p>
+      <GeneralRules />
       <Footer onOpenRegister={openRegister} />
       <EventDetailModal event={selectedEvent} onClose={() => setSelectedEvent(null)} onOpenRegister={openRegister} />
       <RegisterModal open={registerOpen} onClose={() => setRegisterOpen(false)} />
