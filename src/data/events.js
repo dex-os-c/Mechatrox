@@ -24,7 +24,7 @@ export const technicalEvents = [
       'Questions are based on engineering fundamentals.',
       'Three rounds: Prelims (MCQ), Buzzer Round, Rapid Fire. No mobile phones allowed.',
       'Max 2-3 members per team. Solo participation allowed, but a team is preferred.',
-      'Covers Mechatronics, Electronics, Mechanical basics, current tech & general knowledge.',
+      'Engineering basics  & general knowledge.',
       "Tie-breaker conducted via buzzer. Organizer's decision is final.",
       'Malpractice or Googling leads to direct disqualification of the team.',
     ],
