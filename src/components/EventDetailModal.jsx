@@ -54,6 +54,11 @@ export default function EventDetailModal({ event, onClose, onOpenRegister }) {
           <p className="mt-4 text-[15px] leading-relaxed max-w-[480px]" style={{ color: 'var(--ink-dim)' }}>
             {event.desc}
           </p>
+          {event.meta && (
+            <p className="mt-3 font-mono text-[11px] tracking-[0.04em]" style={{ color: 'var(--copper-bright)' }}>
+              {event.meta}
+            </p>
+          )}
         </div>
 
         <div className="datasheet reveal-none mx-7 md:mx-10 mt-6 mb-9" style={{ borderColor: 'var(--line-bright)' }}>

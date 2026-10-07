@@ -24,6 +24,11 @@ export default function EventsSection({ id, trackLabel, title, sub, events, onSe
               </div>
               <h3 className="text-[22px] mb-2.5">{ev.title}</h3>
               <p className="text-[14.5px] leading-relaxed max-w-[420px]" style={{ color: 'var(--ink-dim)' }}>{ev.desc}</p>
+              {ev.meta && (
+                <span className="block font-mono text-[10.5px] tracking-[0.04em] mt-3" style={{ color: 'var(--ink-faint)' }}>
+                  {ev.meta}
+                </span>
+              )}
               <span className="card-more font-mono text-[11px] tracking-[0.08em] mt-4 inline-flex items-center gap-1.5" style={{ color: 'var(--gold)' }}>
                 VIEW DETAILS <span aria-hidden="true">→</span>
               </span>

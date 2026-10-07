@@ -158,27 +158,45 @@ export function EsportsIcon() {
   )
 }
 
-/** NT.03 — Meme Marathon: a grinning 3D face */
-export function MemeIcon() {
-  const group = useRef()
+/** NT.03 — SDG 16 / Sortxra: an item hopping along a conveyor into sorting bins */
+export function SortIcon() {
+  const item = useRef()
+  const bins = [
+    { x: -0.55, color: GOLD },
+    { x: 0, color: COPPER },
+    { x: 0.55, color: DARK },
+  ]
   useFrame((state) => {
-    if (group.current) group.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.4
+    if (!item.current) return
+    const t = state.clock.elapsedTime * 0.7
+    const seg = t % bins.length
+    const i0 = Math.floor(seg)
+    const local = seg - i0
+    const from = bins[i0]
+    const to = bins[(i0 + 1) % bins.length]
+    const x = from.x + (to.x - from.x) * local
+    const hop = Math.sin(local * Math.PI) * 0.35
+    item.current.position.set(x, -0.08 + hop, 0)
+    item.current.rotation.y = t * 2.2
+    item.current.rotation.x = t * 1.4
   })
   return (
-    <group ref={group}>
-      <mesh>
-        <sphereGeometry args={[0.6, 32, 32]} />
-        <meshStandardMaterial color={GOLD} metalness={0.3} roughness={0.5} />
+    <group rotation={[-0.2, 0, 0]}>
+      <mesh position={[0, -0.55, 0]}>
+        <boxGeometry args={[1.5, 0.08, 0.5]} />
+        <meshStandardMaterial color={DEEP} metalness={0.3} roughness={0.6} />
+        <Edges color={COPPER} />
       </mesh>
-      {[-0.22, 0.22].map((x, i) => (
-        <mesh key={i} position={[x, 0.15, 0.52]}>
-          <sphereGeometry args={[0.07, 12, 12]} />
-          <meshStandardMaterial color={DEEP} />
+      {bins.map((b, i) => (
+        <mesh key={i} position={[b.x, -0.38, 0]}>
+          <boxGeometry args={[0.34, 0.26, 0.34]} />
+          <meshStandardMaterial color={b.color} metalness={0.3} roughness={0.5} />
+          <Edges color={GOLD} />
         </mesh>
       ))}
-      <mesh position={[0, -0.15, 0.5]} rotation={[0.3, 0, 0]}>
-        <torusGeometry args={[0.22, 0.05, 8, 24, Math.PI]} />
-        <meshStandardMaterial color={DEEP} />
+      <mesh ref={item} position={[-0.55, -0.08, 0]}>
+        <octahedronGeometry args={[0.16, 0]} />
+        <meshStandardMaterial color={GOLD} metalness={0.5} roughness={0.3} />
       </mesh>
     </group>
   )
@@ -225,6 +243,6 @@ export const ICONS = {
   mirror: MirrorIcon,
   ipl: AuctionIcon,
   esports: EsportsIcon,
-  meme: MemeIcon,
+  sdg16: SortIcon,
   ad: AdIcon,
 }
