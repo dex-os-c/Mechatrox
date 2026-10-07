@@ -158,7 +158,7 @@ export function EsportsIcon() {
   )
 }
 
-/** NT.03 — SDG 16 / Sortxra: an item hopping along a conveyor into sorting bins */
+/** NT.03 — SDG Hunt: an item hopping along a conveyor into sorting bins */
 export function SortIcon() {
   const item = useRef()
   const bins = [
@@ -243,6 +243,6 @@ export const ICONS = {
   mirror: MirrorIcon,
   ipl: AuctionIcon,
   esports: EsportsIcon,
-  sdg16: SortIcon,
+  sdghunt: SortIcon,
   ad: AdIcon,
 }
