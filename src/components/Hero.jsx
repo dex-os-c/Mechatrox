@@ -68,7 +68,7 @@ export default function Hero({ ready, onOpenRegister }) {
           style={{ background: 'linear-gradient(180deg, rgba(4,16,13,0.1) 0%, rgba(4,16,13,0.5) 55%, var(--pcb-0) 100%)' }}
         />
 
-        <div className="relative z-[2] wrap w-full">
+        <div className="relative z-[2] wrap hero-wrap w-full">
           <div className="hero-eyebrow eyebrow mb-5" style={{ opacity: 0, transform: 'translateY(16px)' }}>
             {eventInfo.department.toUpperCase()} · {eventInfo.collegeShort.toUpperCase()}
           </div>

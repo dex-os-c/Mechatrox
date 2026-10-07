@@ -31,6 +31,13 @@ p{ margin:0; }
 .wrap{ max-width:1240px; margin:0 auto; padding:0 28px; }
 @media (max-width:480px){ .wrap{ padding:0 18px; } }
 
+/* .wrap's 1240px cap is fine for most sections, but on wide laptop/desktop
+   screens it leaves the Hero's left-aligned text block floating with huge
+   empty gutters on both sides, which reads as "centered" even though
+   nothing actually has text-align:center. Only widen it there — mobile
+   and tablet are unaffected (untouched below 1024px). */
+@media (min-width:1024px){ .hero-wrap{ max-width:min(90vw, 1760px); } }
+
 .eyebrow{ font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; color:var(--copper-bright); }
 .sec-label{ font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; color:var(--copper-bright); margin-bottom:14px; }
 
