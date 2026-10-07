@@ -29,11 +29,22 @@ export function RobotModel() {
   // Positioned relative to the camera's actual visible frustum (viewport,
   // in three.js world units) rather than fixed coordinates, so it frames
   // correctly on a narrow/portrait phone instead of just a wide desktop view.
-  const targetHeight = viewport.height * (viewport.width < 3.4 ? 0.62 : 0.86)
+  //
+  // Desktop branch (viewport.width >= 3.4, i.e. landscape) used to run the
+  // model up to 86% of viewport height with only a 0.1-unit clearance from
+  // the right edge -- on a wide-but-short laptop window that's tall/wide
+  // enough, and close enough to the edge, that an arm swinging out during
+  // the Dance/Jump clips (halfBodyWidth is a static at-rest guess, not
+  // measured per-pose) could push past the edge and read as "cut off".
+  // Scaled down and given real edge clearance below; mobile branch
+  // (viewport.width < 3.4) is untouched.
+  const isDesktop = viewport.width >= 3.4
+  const targetHeight = viewport.height * (isDesktop ? 0.72 : 0.62)
   const scale = targetHeight / modelHeight
   const halfBodyWidth = 0.42 * scale
-  const x = Math.min(viewport.width * 0.28, viewport.width / 2 - halfBodyWidth - 0.1)
-  const y = -viewport.height / 2 + (viewport.width < 3.4 ? 0.55 : 0.25)
+  const edgeClearance = isDesktop ? 0.6 : 0.1
+  const x = Math.min(viewport.width * (isDesktop ? 0.24 : 0.28), viewport.width / 2 - halfBodyWidth - edgeClearance)
+  const y = -viewport.height / 2 + (isDesktop ? 0.3 : 0.55)
 
   const playIdle = () => {
     const idle = names.find((n) => /idle/i.test(n)) || names[0]
