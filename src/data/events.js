@@ -19,8 +19,9 @@ export const technicalEvents = [
     key: 'quiz',
     title: 'QUIZTRONIX (TECHNICAL QUIZ)',
     tag: 'Recall',
-    desc: 'Three rounds, zero phones. Prelims narrow the field, then it comes down to buzzers and rapid fire.',
+    desc: 'Three rounds, zero phones. Questions are based on engineering fundamentals — prelims narrow the field, then it comes down to buzzers and rapid fire.',
     details: [
+      'Questions are based on engineering fundamentals.',
       'Three rounds: Prelims (MCQ), Buzzer Round, Rapid Fire. No mobile phones allowed.',
       'Max 2-3 members per team. Solo participation allowed, but a team is preferred.',
       'Covers Mechatronics, Electronics, Mechanical basics, current tech & general knowledge.',
@@ -115,7 +116,7 @@ export const nonTechnicalEvents = [
     desc: 'Sell something absurd. Teams get a product on the spot and a few minutes to convince a skeptical room to buy it.',
     details: [
       'Max 3 members per team. A product/topic is given on the spot for ad creation.',
-      '10 minutes preparation + 3-4 minutes performance per team.',
+      'Preparation and performance time per team: 10 to 30 minutes, as announced on the day.',
       'No offensive, abusive, or vulgar content — creativity with decency.',
       'Props are allowed but must be arranged by the team. No damage to stage property.',
       'Judged on Creativity, Humor, Team Coordination & Brand Message.',
@@ -156,3 +157,46 @@ export const eventInfo = {
   ],
   developers: ['Murugan .V', 'Deena .M', 'Rohith .R', 'Sanjana .R', 'Tejashwini .C'],
 }
+
+export const generalRules = [
+  {
+    title: 'Single Registration, Limited Access',
+    body: 'One fee of ₹200/head gives access to ONE Technical event + ONE Non-Technical event only. Extra events require separate registration.',
+  },
+  {
+    title: 'ID Verification Mandatory',
+    body: 'College ID + Registration confirmation (QR/Email) is compulsory at the entry gate.',
+  },
+  {
+    title: 'Punctuality & Reporting',
+    body: 'Report 15 minutes before event time. Late entries will not be allowed.',
+  },
+  {
+    title: 'Code of Conduct & Discipline',
+    body: 'Professional behavior only. Offensive content (e.g. Ad Mad Show) or malpractice = direct disqualification.',
+  },
+  {
+    title: 'Team & Individual Participation',
+    body: 'Solo or team allowed unless specified. One person cannot join multiple teams for the same event.',
+  },
+  {
+    title: 'Originality & Innovation',
+    body: 'For Theorix, Innoverse, Mirror Verse — projects must be original. Plagiarism will be rejected.',
+  },
+  {
+    title: 'Time Limit Strictly Enforced',
+    body: "Fixed time per team. Exceeding the limit leads to negative marking. Judge's timer is final.",
+  },
+  {
+    title: "Judge's Decision is Final",
+    body: 'Judges and the organizing committee\'s decision is final and binding. No re-evaluation.',
+  },
+  {
+    title: 'Sustainable Event Protocol',
+    body: 'No single-use plastic. Bring reusable bottles. Maintain cleanliness — Green Symposium theme.',
+  },
+  {
+    title: 'Spot Registration & Prize Policy',
+    body: 'Spot registration subject to availability. Prizes/certificates given only if present during the valedictory.',
+  },
+]
