@@ -65,8 +65,8 @@ export default function EventDetailModal({ event, onClose, onOpenRegister }) {
           <div className="head">HOW IT WORKS</div>
           {(event.details || []).map((line, i) => (
             <div className="row" key={i}>
-              <span className="k">{String(i + 1).padStart(2, '0')}</span>
-              <span className="v" style={{ textAlign: 'left', maxWidth: '78%' }}>{line}</span>
+              <span className="k" style={{ flex: '0 0 auto' }}>{String(i + 1).padStart(2, '0')}</span>
+              <span className="v" style={{ textAlign: 'left', flex: '1 1 auto', maxWidth: '78%' }}>{line}</span>
             </div>
           ))}
         </div>
