@@ -5,7 +5,8 @@ export default function CollegeBar() {
   const [logoOk, setLogoOk] = useState(true)
 
   return (
-    <div className="wrap flex items-center justify-between gap-x-6 gap-y-1 py-4 flex-wrap" style={{ background: 'var(--pcb-1)', borderBottom: '1px solid var(--line-bright)' }}>
+    <div style={{ background: 'var(--pcb-1)', borderBottom: '1px solid var(--line-bright)' }}>
+      <div className="wrap flex items-center justify-between gap-x-6 gap-y-1 py-4 flex-wrap">
       <div className="flex items-center gap-3 min-w-0">
         {logoOk ? (
           <img
@@ -51,6 +52,7 @@ export default function CollegeBar() {
             {a}
           </span>
         ))}
+      </div>
       </div>
     </div>
   )
