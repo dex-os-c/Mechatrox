@@ -85,30 +85,6 @@ export function ExpoIcon() {
   )
 }
 
-/** TE.04 — Mirror Verse: a shape and its mirrored twin either side of a symmetry line */
-export function MirrorIcon() {
-  const group = useRef()
-  useFrame((state) => {
-    if (group.current) group.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.6) * 0.35
-  })
-  return (
-    <group ref={group}>
-      <mesh position={[-0.55, 0, 0]}>
-        <coneGeometry args={[0.35, 0.7, 4]} />
-        <meshStandardMaterial color={GOLD} metalness={0.5} roughness={0.3} />
-      </mesh>
-      <mesh position={[0.55, 0, 0]} scale={[-1, 1, 1]}>
-        <coneGeometry args={[0.35, 0.7, 4]} />
-        <meshStandardMaterial color={COPPER} metalness={0.5} roughness={0.3} transparent opacity={0.85} />
-      </mesh>
-      <mesh>
-        <boxGeometry args={[0.015, 1.1, 0.015]} />
-        <meshBasicMaterial color="#8FA39B" transparent opacity={0.6} />
-      </mesh>
-    </group>
-  )
-}
-
 /** NT.01 — IPL Auction: gavel */
 export function AuctionIcon() {
   const group = useRef()
@@ -202,47 +178,11 @@ export function SortIcon() {
   )
 }
 
-/** NT.04 — Advertisement: megaphone with sound rings */
-export function AdIcon() {
-  const rings = useRef([])
-  useFrame((state) => {
-    const t = state.clock.elapsedTime
-    rings.current.forEach((r, i) => {
-      if (!r) return
-      const phase = (t * 0.6 + i / 3) % 1
-      const s = 0.7 + phase * 2.1
-      r.scale.set(s, s, s)
-      r.position.x = 0.66 + phase * 0.6
-      r.material.opacity = 1 - phase
-    })
-  })
-  return (
-    <group rotation={[-0.25, 0, 0]}>
-      <mesh rotation={[0, 0, Math.PI / 2]}>
-        <coneGeometry args={[0.55, 0.9, 20, 1, true]} />
-        <meshStandardMaterial color={COPPER} metalness={0.5} roughness={0.35} side={2} />
-      </mesh>
-      <mesh position={[-0.6, -0.36, 0]} rotation={[0, 0, Math.PI / 2.4]}>
-        <cylinderGeometry args={[0.06, 0.06, 0.5, 10]} />
-        <meshStandardMaterial color={DEEP} />
-      </mesh>
-      {[0, 1, 2].map((i) => (
-        <mesh key={i} ref={(el) => (rings.current[i] = el)} rotation={[0, Math.PI / 2, 0]}>
-          <torusGeometry args={[0.18, 0.014, 8, 24]} />
-          <meshBasicMaterial color={GOLD} transparent />
-        </mesh>
-      ))}
-    </group>
-  )
-}
-
 export const ICONS = {
   ppt: PptIcon,
   quiz: QuizIcon,
   expo: ExpoIcon,
-  mirror: MirrorIcon,
   ipl: AuctionIcon,
   esports: EsportsIcon,
   sdghunt: SortIcon,
-  ad: AdIcon,
 }

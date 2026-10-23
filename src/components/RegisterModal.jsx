@@ -172,7 +172,7 @@ export default function RegisterModal({ open, onClose }) {
               {eventInfo.date} ({eventInfo.day}) · {eventInfo.venue} · {eventInfo.entry}
             </p>
             <p className="font-mono text-[11px] tracking-[0.04em] mb-8" style={{ color: 'var(--copper-bright)' }}>
-              Online registration closes {eventInfo.regDeadline} · Spot registration also available
+              Spot registration also available
             </p>
 
             {errors.length > 0 && (

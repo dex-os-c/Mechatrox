@@ -45,21 +45,6 @@ export const technicalEvents = [
     ],
     meta: 'Team: 2-3 Members · Duration: 2-3 Hrs',
   },
-  {
-    code: 'TE.04',
-    key: 'mirror',
-    title: 'MIRROR VERSE (REVERSE ENGINEERING / CAD)',
-    tag: 'Design',
-    desc: 'Given a component image or physical part, model it in CAD — or take it apart and explain exactly how it works. No internet, no shortcuts.',
-    details: [
-      'Participants are given a component image/physical part to model in CAD or disassemble.',
-      'Max 2 members per team. Laptops with CAD software (SolidWorks/Fusion) must be brought.',
-      'Time limit: 2 hours for modeling/dismantling and explaining the mechanism.',
-      'No internet allowed for modeling — original design thinking is what gets evaluated.',
-      'Judged on Accuracy, Time, Design Clarity & Explanation.',
-    ],
-    meta: 'Team: Max 2 Members · Duration: 2-3 Hrs',
-  },
 ]
 
 export const nonTechnicalEvents = [
@@ -108,21 +93,6 @@ export const nonTechnicalEvents = [
     ],
     meta: 'Team: Max 3 Members · Duration: 2-3 Hrs',
   },
-  {
-    code: 'NT.04',
-    key: 'ad',
-    title: 'AD MAD SHOW (BRAND BATTLE)',
-    tag: 'Pitch',
-    desc: 'Sell something absurd. Teams get a product on the spot and a few minutes to convince a skeptical room to buy it.',
-    details: [
-      'Max 3 members per team. A product/topic is given on the spot for ad creation.',
-      'Preparation and performance time per team: 10 to 30 minutes, as announced on the day.',
-      'No offensive, abusive, or vulgar content — creativity with decency.',
-      'Props are allowed but must be arranged by the team. No damage to stage property.',
-      'Judged on Creativity, Humor, Team Coordination & Brand Message.',
-    ],
-    meta: 'Team: Max 3 Members · Duration: 2-3 Hrs',
-  },
 ]
 
 export const eventInfo = {
@@ -141,7 +111,6 @@ export const eventInfo = {
   venue: 'West Block Auditorium, PMC Tech',
   entry: '₹200 (1 Technical + 1 Non-Technical)',
   eventDuration: '2-3 Hours per event',
-  regDeadline: '22.10.2026',
   spotRegistrationAvailable: true,
   upiId: 'rvramprakas35@oksbi',
   email: 'mechatrox2k26@gmail.com',
@@ -173,7 +142,7 @@ export const generalRules = [
   },
   {
     title: 'Code of Conduct & Discipline',
-    body: 'Professional behavior only. Offensive content (e.g. Ad Mad Show) or malpractice = direct disqualification.',
+    body: 'Professional behavior only. Offensive content or malpractice = direct disqualification.',
   },
   {
     title: 'Team & Individual Participation',
@@ -181,7 +150,7 @@ export const generalRules = [
   },
   {
     title: 'Originality & Innovation',
-    body: 'For Theorix, Innoverse, Mirror Verse — projects must be original. Plagiarism will be rejected.',
+    body: 'For Theorix and Innoverse — projects must be original. Plagiarism will be rejected.',
   },
   {
     title: 'Time Limit Strictly Enforced',

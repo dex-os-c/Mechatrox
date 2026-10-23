@@ -89,8 +89,8 @@ export default function Hero({ ready, onOpenRegister }) {
           </h1>
 
           <p className="hero-sub max-w-xl mt-6 text-base leading-relaxed" style={{ color: 'var(--ink-dim)', opacity: 0, transform: 'translateY(16px)' }}>
-            {eventInfo.festName} is the {eventInfo.department}'s annual symposium at {eventInfo.college} — four technical
-            events for people who'd rather solder, model, and debug than sit through another lecture, and four
+            {eventInfo.festName} is the {eventInfo.department}'s annual symposium at {eventInfo.college} — three technical
+            events for people who'd rather solder, model, and debug than sit through another lecture, and three
             non-technical ones for everyone else in the room.
           </p>
 

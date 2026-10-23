@@ -15,10 +15,9 @@ Built as a real React project — not a single static HTML file — using:
 
 - Hero section with a real animated **RobotExpressive** 3D model (idle animation) drifting
   in front of a procedurally generated node network
-- An interactive **"Lineup"** index — hover or tap any of the 10 events and its 3D icon
+- An interactive **"Lineup"** index — hover or tap any of the 6 events and its 3D icon
   swaps live in the preview pane
-- A real **rubber duck** 3D model used for Circuit Debugging (rubber-duck debugging)
-- 10 event cards across two tracks, sourced from the official poster
+- - 6 event cards across two tracks, sourced from the official poster
 - Smooth inertia scrolling, custom cursor, scroll-triggered reveals, a preloader that
   cannot get stuck (it force-dismisses itself after 4s no matter what)
 
